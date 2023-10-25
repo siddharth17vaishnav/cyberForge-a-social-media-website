@@ -1,10 +1,10 @@
 'use client'
-import React from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import LoginForm from '@/forms/auth/login'
+import React from 'react'
 import { useRouter } from 'next/navigation'
+import SignUpForm from '@/forms/auth/signup'
 
-const LoginSection = () => {
+const SignUpSection = () => {
   const router = useRouter()
   return (
     <div className="w-full h-screen flex px-3">
@@ -12,22 +12,20 @@ const LoginSection = () => {
         <Card className="w-[350px]">
           <CardHeader>
             <CardTitle className="self-center text-3xl font-pacifico">CyberForge</CardTitle>
-            <CardDescription className="self-center !mt-5">
-              Login using your registered credentials
-            </CardDescription>
+            <CardDescription className="self-center !mt-5">Create a new account</CardDescription>
           </CardHeader>
-          <LoginForm />
+          <SignUpForm />
         </Card>
         <p className="flex my-4 justify-center">OR</p>
         <Card className="w-[350px]">
           <CardHeader>
             <CardDescription className="self-center">
-              Don&apos;t have account?{' '}
+              Already have an account?{' '}
               <span
                 className="text-black font-semibold cursor-pointer"
-                onClick={() => router.push('/auth/signup')}>
+                onClick={() => router.push('/auth')}>
                 {' '}
-                Sign up
+                Login
               </span>
             </CardDescription>
           </CardHeader>
@@ -37,4 +35,4 @@ const LoginSection = () => {
   )
 }
 
-export default LoginSection
+export default SignUpSection

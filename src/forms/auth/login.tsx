@@ -3,8 +3,10 @@ import { CardContent, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { addCookie } from '@/utils/cokkies'
 import supabase from '@/utils/supabase'
-import LoginFormValidation from '@/validations/login'
+import LoginFormValidation from '@/validations/auth/login'
+import { ReloadIcon } from '@radix-ui/react-icons'
 import { useFormik } from 'formik'
+import { toast } from 'sonner'
 const LoginForm = () => {
   const {
     values: { email, password },
@@ -24,13 +26,18 @@ const LoginForm = () => {
           email: values.email,
           password: values.password
         })
-        .then(async () => {
-          await supabase.auth.getSession().then(({ data }) => {
-            addCookie('auth_token', data.session?.access_token!)
-          })
+        .then(async res => {
+          const errors = res.error
+          if (errors) {
+            toast.error(errors.message)
+          } else {
+            await supabase.auth.getSession().then(({ data }) => {
+              addCookie('auth_token', data.session?.access_token!)
+            })
+          }
         })
     },
-    isInitialValid: false
+    validateOnMount: true
   })
   return (
     <>
@@ -63,6 +70,7 @@ const LoginForm = () => {
           className="w-full"
           disabled={!isValid || isSubmitting}
           onClick={() => handleSubmit()}>
+          {isSubmitting && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
           Login
         </Button>
       </CardFooter>

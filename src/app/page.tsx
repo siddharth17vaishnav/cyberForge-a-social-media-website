@@ -1,3 +1,9 @@
+import Login from '@/sections/auth/login'
+
 export default function Home() {
-  return <main>HELLO WORLD</main>
+  return (
+    <main>
+      <Login />
+    </main>
+  )
 }

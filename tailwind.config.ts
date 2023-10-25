@@ -8,9 +8,6 @@ module.exports = {
     './src/**/*.{ts,tsx}'
   ],
   theme: {
-    fontFamily: {
-      pacifico: ['Pacifico', 'cursive']
-    },
     container: {
       center: true,
       padding: '2rem',
@@ -18,7 +15,6 @@ module.exports = {
         '2xl': '1400px'
       }
     },
-
     extend: {
       keyframes: {
         'accordion-down': {

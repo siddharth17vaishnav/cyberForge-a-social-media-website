@@ -1,17 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { UserType } from './user.types'
 
-const initialState = {
-  user: {}
+const initialState: UserType = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  profile: ''
 }
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserType: (state, { payload }) => {
-      state.user = payload
+    setAccount: (state, { payload }: { payload: UserType }) => {
+      Object.keys(payload).forEach(key => {
+        state[key] = payload[key]
+      })
     }
   }
 })
-export const { setUserType } = userSlice.actions
+export const { setAccount } = userSlice.actions
 export default userSlice.reducer

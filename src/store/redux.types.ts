@@ -1,8 +1,8 @@
 import store from '@/store'
 import { Action, ThunkAction } from '@reduxjs/toolkit'
+import { UserType } from './User/user.types'
 export interface RootReduxState {
-  // TODO REMOVE THIS
-  userSlice: any
+  userSlice: UserType
 }
 
 export type RootState = ReturnType<typeof store.getState>

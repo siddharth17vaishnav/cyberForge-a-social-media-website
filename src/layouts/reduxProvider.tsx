@@ -1,4 +1,5 @@
 'use client'
+import ModalProvider from '@/modals'
 import store from '@/store'
 import { ReactNode } from 'react'
 import { Provider } from 'react-redux'
@@ -12,6 +13,7 @@ const ReduxProvider = ({ children }: Props) => {
   const persistor = persistStore(store)
   return (
     <Provider store={store}>
+      <ModalProvider />
       <PersistGate persistor={persistor}>{children}</PersistGate>
     </Provider>
   )

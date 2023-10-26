@@ -1,10 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  daisyui: {
-    styled: true,
-    themes: [],
-    rtl: false
-  },
   darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
@@ -12,6 +7,7 @@ module.exports = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}'
   ],
+
   theme: {
     container: {
       center: true,
@@ -40,5 +36,5 @@ module.exports = {
       }
     }
   },
-  plugins: [require('tailwindcss-animate'), require('daisyui')]
+  plugins: [require('tailwindcss-animate')]
 }

@@ -9,10 +9,13 @@ import { BiHomeAlt2, BiSearchAlt2, BiMessageDetail } from 'react-icons/bi'
 import { HiOutlineLogout } from 'react-icons/hi'
 import { useSelector } from 'react-redux'
 import { IoCreateOutline } from 'react-icons/io5'
+import { useAppDispatch } from '@/store'
+import { setModals } from '@/store/Modals/modals.slice'
 
 const Drawer = () => {
   const pathName = usePathname()
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const userDetails = useSelector((state: RootReduxState) => state.userSlice)
   const options = [
     { id: 1, title: 'Home', icon: <BiHomeAlt2 />, isActive: pathName === '/', link: '/' },
@@ -21,28 +24,28 @@ const Drawer = () => {
       title: 'Search',
       icon: <BiSearchAlt2 />,
       isActive: pathName.includes('search'),
-      link: '/search'
+      onClick: () => router.replace('/')
     },
     {
       id: 3,
       title: 'Messages',
       icon: <BiMessageDetail />,
       isActive: pathName.includes('messages'),
-      link: '/messages'
+      onClick: () => router.replace('/messages')
     },
     {
       id: 4,
       title: 'Create New Post',
       icon: <IoCreateOutline />,
       isActive: false,
-      link: '/?create-post=true'
+      onClick: () => dispatch(setModals({ createPost: true }))
     },
     {
       id: 5,
       title: 'Profile',
       icon: (
         <Image
-          src={!!userDetails.profile ? userDetails.profile : assets.images.DUMMY_PROFILE}
+          src={userDetails.profile ?? assets.images.DUMMY_PROFILE}
           alt="profile"
           width={20}
           height={20}
@@ -50,7 +53,7 @@ const Drawer = () => {
         />
       ),
       isActive: pathName.includes('profile'),
-      link: '/profile'
+      onClick: () => router.replace('/profile')
     }
   ]
 
@@ -66,7 +69,7 @@ const Drawer = () => {
                 className={`flex px-8 py-2 gap-2 cursor-pointer ${
                   menu.isActive ? 'bg-[#F3F3F3]' : 'bg-white'
                 } hover:bg-[#F3F3F3]`}
-                onClick={() => router.push('/profile')}>
+                onClick={menu.onClick}>
                 <div className="self-center text-xl">{menu.icon}</div>
                 <div className="self-center text-xl">{menu.title}</div>
               </div>

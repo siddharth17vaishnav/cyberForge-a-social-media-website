@@ -9,15 +9,20 @@ import completeProfileValidation from '@/validations/auth/completeProfile'
 
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { useFormik } from 'formik'
-import { useSearchParams } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import { MdEdit } from 'react-icons/md'
 
 const CompleteProfileForm = () => {
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
   const ref = useRef<HTMLInputElement>(null)
+  const router = useRouter()
   const [[selectedImage, file], setSelectedImage] = useState<[string, File | null]>(['', null])
+
+  useEffect(() => {
+    if (!email) router.replace('/auth/signup')
+  }, [])
   const {
     values: { firstName, lastName },
     errors,
@@ -34,24 +39,32 @@ const CompleteProfileForm = () => {
     },
     validationSchema: completeProfileValidation,
     onSubmit: async values => {
-      await supabase.storage
-        .from('profiles')
-        .upload(`public/${email}/${file?.name}`, file as File, {
-          cacheControl: '3600',
-          upsert: false
-        })
-        .then(async res => {
-          if (res.data)
-            await supabase
-              .from('user_profiles')
-              .upsert({
-                email,
-                first_name: values.firstName,
-                last_name: values.lastName,
-                profile: `https://bsluzuktmnydpxshkbxl.supabase.co/storage/v1/object/public/profiles/${res.data.path}`
-              })
-              .select()
-        })
+      let fileName = ''
+      if (file) {
+        await supabase.storage
+          .from('profiles')
+          .upload(`public/${email}/${file?.name}`, file, {
+            cacheControl: '3600',
+            upsert: false
+          })
+          .then(res => (fileName = res.data?.path!))
+      }
+
+      await supabase
+        .from('user_profiles')
+        .upsert(
+          {
+            email,
+            first_name: values.firstName,
+            last_name: values.lastName,
+            profile: file
+              ? `https://bsluzuktmnydpxshkbxl.supabase.co/storage/v1/object/public/profiles/${fileName}`
+              : null
+          },
+          { onConflict: 'email' }
+        )
+        .select()
+        .then(() => router.push('/'))
     }
   })
   const handleOnImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

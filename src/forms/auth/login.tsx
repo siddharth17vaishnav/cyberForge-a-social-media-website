@@ -32,6 +32,7 @@ const LoginForm = () => {
             toast.error(errors.message)
           } else {
             await supabase.auth.getSession().then(({ data }) => {
+              supabase.auth.setSession(data.session!)
               addCookie('auth_token', data.session?.access_token!)
             })
           }

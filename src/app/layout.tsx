@@ -16,8 +16,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <title>CyberForge</title>
       </head>
       <body>
+        <Toaster />
         <ReduxProvider>
-          <Toaster />
           <MainLayout>{children}</MainLayout>
         </ReduxProvider>
       </body>

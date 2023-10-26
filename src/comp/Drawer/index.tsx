@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { BiHomeAlt2, BiSearchAlt2, BiMessageDetail } from 'react-icons/bi'
 import { HiOutlineLogout } from 'react-icons/hi'
 import { useSelector } from 'react-redux'
+import { IoCreateOutline } from 'react-icons/io5'
 
 const Drawer = () => {
   const pathName = usePathname()
@@ -31,6 +32,13 @@ const Drawer = () => {
     },
     {
       id: 4,
+      title: 'Create New Post',
+      icon: <IoCreateOutline />,
+      isActive: false,
+      link: '/?create-post=true'
+    },
+    {
+      id: 5,
       title: 'Profile',
       icon: (
         <Image
@@ -58,7 +66,7 @@ const Drawer = () => {
                 className={`flex px-8 py-2 gap-2 cursor-pointer ${
                   menu.isActive ? 'bg-[#F3F3F3]' : 'bg-white'
                 } hover:bg-[#F3F3F3]`}
-                onClick={() => router.replace(menu.link)}>
+                onClick={() => router.push('/profile')}>
                 <div className="self-center text-xl">{menu.icon}</div>
                 <div className="self-center text-xl">{menu.title}</div>
               </div>

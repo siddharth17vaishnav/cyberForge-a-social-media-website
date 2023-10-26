@@ -1,3 +1,5 @@
+import HomeSection from '@/sections/home'
+
 export default function Home() {
-  return <main>HOME PAGE</main>
+  return <HomeSection />
 }

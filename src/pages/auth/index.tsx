@@ -1,7 +1,6 @@
 import LoginSection from '@/sections/auth/login'
-
-const Login = () => {
+const login = () => {
   return <LoginSection />
 }
 
-export default Login
+export default login

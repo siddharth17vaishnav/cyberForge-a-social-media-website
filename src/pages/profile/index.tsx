@@ -1,6 +1,7 @@
 import ProfileSection from '@/sections/profile'
 
-const Profile = () => {
+const profile = () => {
   return <ProfileSection />
 }
-export default Profile
+
+export default profile

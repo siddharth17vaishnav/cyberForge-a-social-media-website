@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from 'next/server'
-
 const guestRoutes = [`/auth`]
 
 export async function middleware(request: NextRequest) {

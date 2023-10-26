@@ -15,6 +15,9 @@ module.exports = {
         '2xl': '1400px'
       }
     },
+    fontFamily: {
+      pacifico: ['Pacifico', 'cursive']
+    },
     extend: {
       keyframes: {
         'accordion-down': {

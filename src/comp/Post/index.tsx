@@ -5,7 +5,14 @@ import { CiMenuKebab } from 'react-icons/ci'
 import { TfiCommentAlt } from 'react-icons/tfi'
 import { FcLike } from 'react-icons/fc'
 import { AiOutlineHeart } from 'react-icons/ai'
-import { PostProps } from '@/api/post/useFetchPosts'
+
+export interface PostProps {
+  created_at: string
+  description: string
+  id: number
+  image: string
+  user_id: number
+}
 
 interface Props {
   post: PostProps

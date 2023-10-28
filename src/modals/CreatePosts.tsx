@@ -62,7 +62,7 @@ export const CreatePosts = () => {
   }
 
   return (
-    <Modal hideClose isOpen={createPost} onClose={onClose}>
+    <Modal hideclose isOpen={createPost} onClose={onClose}>
       <div className="w-full flex justify-between">
         <div className="font-semibold">Create New Post</div>
         <div className="flex gap-3">

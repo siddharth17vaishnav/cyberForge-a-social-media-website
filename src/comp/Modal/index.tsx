@@ -13,7 +13,7 @@ interface Props {
   onClose: () => void
   title?: string
   width?: string
-  hideClose?: boolean
+  hideclose?: boolean
 }
 
 export default function Modal({
@@ -22,11 +22,11 @@ export default function Modal({
   title,
   onClose,
   width = '',
-  hideClose = false
+  hideclose = false
 }: Props) {
   return (
     <Dialog open={isOpen}>
-      <DialogContent onClose={onClose} className={width} hideClose={hideClose}>
+      <DialogContent onClose={onClose} className={width} hideclose={hideclose}>
         <DialogHeader>
           <DialogTitle className="self-center">{title}</DialogTitle>
           <DialogDescription>{children}</DialogDescription>

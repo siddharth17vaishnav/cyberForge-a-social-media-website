@@ -38,7 +38,7 @@ const MainLayout = ({ children }: Props) => {
   else {
     return (
       <div className="grid grid-flow-col ">
-        <div className="col-span-1 h-screen border border-r-1 hidden lg:block ">
+        <div className="sticky col-span-1 h-screen border border-r-1 hidden lg:block ">
           <Drawer />
         </div>
         <div className="col-span-4 h-screen p-2">{children}</div>

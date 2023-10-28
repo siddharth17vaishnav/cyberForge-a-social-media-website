@@ -3,11 +3,13 @@ import { Button } from '@/components/ui/button'
 import { CardContent, CardFooter } from '@/components/ui/card'
 import Error from '@/components/ui/error'
 import { Input } from '@/components/ui/input'
+import { addCookie } from '@/utils/cokkies'
 import supabase from '@/utils/supabase'
 import SignUpFormValidation from '@/validations/auth/signup'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const SignUpForm = () => {
   const router = useRouter()
@@ -34,10 +36,31 @@ const SignUpForm = () => {
           email: values.email,
           password: values.password
         })
-        .then(() => router.push(`/auth/signup/complete-profile?email=${values.email}`))
+        .then(async res => {
+          const errors = res.error
+          if (errors) {
+            toast.error(errors.message)
+          } else {
+            supabase.auth
+              .signInWithPassword({
+                email: values.email,
+                password: values.password
+              })
+              .then(async res => {
+                const errors = res.error
+                if (errors) {
+                  toast.error(errors.message)
+                } else {
+                  await supabase.auth.getSession().then(async ({ data }) => {
+                    addCookie('token', data.session?.access_token!)
+                    router.push(`/auth/signup/complete-profile?email=${values.email}`)
+                  })
+                }
+              })
+          }
+        })
     }
   })
-
   return (
     <>
       <CardContent>

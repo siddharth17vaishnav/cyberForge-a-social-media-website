@@ -1,4 +1,3 @@
-'use client'
 import assets from '@/assets'
 import { Button } from '@/components/ui/button'
 import { CardContent, CardFooter } from '@/components/ui/card'
@@ -12,19 +11,26 @@ import { useFormik } from 'formik'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { MdEdit } from 'react-icons/md'
+import useDebounce from '@/hooks/useDebounce'
+import { addCookie, fetchCookie } from '@/utils/cokkies'
+import { deleteCookie } from 'cookies-next'
 
 const CompleteProfileForm = () => {
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
   const ref = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const [userNameMesssage, setUserNameMessage] = useState<{
+    message: string
+    status: 'error' | 'success'
+  }>({ message: '', status: 'success' })
   const [[selectedImage, file], setSelectedImage] = useState<[string, File | null]>(['', null])
 
-  useEffect(() => {
-    if (!email) router.replace('/auth/signup')
-  }, [])
+  // useEffect(() => {
+  //   if (!email) router.replace('/auth/signup')
+  // }, [])
   const {
-    values: { firstName, lastName },
+    values: { userName, firstName, lastName },
     errors,
     handleChange,
     isValid,
@@ -34,6 +40,7 @@ const CompleteProfileForm = () => {
     setFieldTouched
   } = useFormik({
     initialValues: {
+      userName: '',
       firstName: '',
       lastName: ''
     },
@@ -55,6 +62,7 @@ const CompleteProfileForm = () => {
         .upsert(
           {
             email,
+            user_name: values.userName,
             first_name: values.firstName,
             last_name: values.lastName,
             profile: file
@@ -64,7 +72,12 @@ const CompleteProfileForm = () => {
           { onConflict: 'email' }
         )
         .select()
-        .then(() => router.push('/'))
+        .then(() => {
+          const token = fetchCookie('token')
+          addCookie('auth_token', token as string)
+          deleteCookie('token')
+          router.push('/')
+        })
     }
   })
   const handleOnImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +91,20 @@ const CompleteProfileForm = () => {
       reader.readAsDataURL(selectedFile)
     }
   }
+  const debounce = useDebounce(userName)
 
+  useEffect(() => {
+    setUserNameMessage({ message: '', status: 'success' })
+    supabase
+      .from('user_profiles')
+      .select('user_name')
+      .eq('user_name', debounce)
+      .then(res => {
+        if (res && res.data?.length !== 0)
+          setUserNameMessage({ message: 'Username is already taken!', status: 'error' })
+        else setUserNameMessage({ message: 'Username is available!', status: 'success' })
+      })
+  }, [debounce])
   return (
     <>
       <CardContent>
@@ -109,6 +135,19 @@ const CompleteProfileForm = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Input
+                id="user-name"
+                placeholder="UserName"
+                value={userName}
+                onChange={handleChange('userName')}
+                onBlur={() => setFieldTouched('userName', true)}
+              />
+              <Error
+                error={(touched.userName && errors.userName) || userNameMesssage.message}
+                status={userNameMesssage.status}
+              />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Input
                 id="first-name"
                 placeholder="First Name"
                 value={firstName}
@@ -133,7 +172,7 @@ const CompleteProfileForm = () => {
       <CardFooter className="flex justify-between">
         <Button
           className="w-full"
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isSubmitting || userNameMesssage.status === 'error'}
           onClick={() => handleSubmit()}>
           {isSubmitting && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
           Sign Up

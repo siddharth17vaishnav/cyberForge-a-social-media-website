@@ -45,7 +45,7 @@ const Drawer = () => {
       title: 'Profile',
       icon: (
         <Image
-          src={userDetails.profile ?? assets.images.DUMMY_PROFILE}
+          src={!!userDetails.profile ? userDetails.profile : assets.images.DUMMY_PROFILE}
           alt="profile"
           width={20}
           height={20}
@@ -61,7 +61,7 @@ const Drawer = () => {
     <div className="">
       <div className="font-pacifico text-2xl py-4 px-8">CyberForge</div>
       <div className="mt-[30px]  flex flex-col  justify-between h-[80vh]">
-        <div className="flex flex-col gap-[30px]">
+        <div className="flex flex-col gap-[10px]">
           {options.map(menu => {
             return (
               <div

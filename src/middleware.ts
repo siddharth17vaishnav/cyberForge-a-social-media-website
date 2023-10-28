@@ -1,9 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server'
-const guestRoutes = [`/auth`]
+const guestRoutes = [`/auth`, '/auth/signup', '/auth/signup/complete-profile']
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value
-
   if (new RegExp(/^.*(fonts|_next|vk.com|favicon).*$/).test(request.url)) {
     return NextResponse.next()
   }

@@ -43,7 +43,6 @@ const LoginForm = () => {
     },
     validateOnMount: true
   })
-
   return (
     <>
       <CardContent>

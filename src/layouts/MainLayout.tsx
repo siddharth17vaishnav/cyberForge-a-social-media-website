@@ -13,27 +13,26 @@ const MainLayout = ({ children }: Props) => {
   const pathName = usePathname()
   const dispatch = useAppDispatch()
   useEffect(() => {
-    if (!pathName.includes('auth'))
-      supabase.auth.getUser().then(session => {
-        const email = session.data.user?.email
-        supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('email', email)
-          .then(
-            ({ data: userData }) =>
-              userData &&
-              dispatch(
-                setAccount({
-                  userName: userData[0].user_name,
-                  firstName: userData[0].first_name,
-                  lastName: userData[0].last_name,
-                  email: userData[0].email,
-                  profile: userData[0].profile
-                })
-              )
-          )
-      })
+    supabase.auth.getUser().then(session => {
+      const email = session.data.user?.email
+      supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('email', email)
+        .then(({ data: userData }) => {
+          userData &&
+            dispatch(
+              setAccount({
+                id: userData[0]?.id,
+                userName: userData[0]?.user_name,
+                firstName: userData[0]?.first_name,
+                lastName: userData[0]?.last_name,
+                email: userData[0]?.email,
+                profile: userData[0]?.profile
+              })
+            )
+        })
+    })
   }, [])
   if (pathName.includes('auth')) return <>{children}</>
   else {

@@ -1,5 +1,6 @@
 export interface UserType {
-  [key: string]: string | undefined
+  [key: string]: string | number | undefined
+  id: number
   userName: string
   firstName: string
   lastName: string

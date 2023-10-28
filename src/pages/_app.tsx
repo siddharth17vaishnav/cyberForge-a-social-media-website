@@ -5,6 +5,7 @@ import MainLayout from '@/layouts/MainLayout.tsx'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Loader from '@/comp/Loader'
+import { Toaster } from 'sonner'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -27,6 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [router])
   return (
     <ReduxProvider>
+      <Toaster />
       <MainLayout>{loading ? <Loader /> : <Component {...pageProps} />}</MainLayout>
     </ReduxProvider>
   )

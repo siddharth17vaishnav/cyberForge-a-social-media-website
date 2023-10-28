@@ -21,6 +21,7 @@ export const Logout = () => {
       router.push('/auth')
       removeCookie('auth_token')
       dispatch(setModals({ logout: false }))
+      dispatch({ type: 'reset' })
     })
   }
   return (

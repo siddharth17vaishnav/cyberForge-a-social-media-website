@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { UserType } from './user.types'
 
 const initialState: UserType = {
+  id: 0,
   userName: '',
   firstName: '',
   lastName: '',

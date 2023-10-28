@@ -1,11 +1,16 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import LoginForm from '@/forms/auth/login'
 import { useRouter } from 'next/navigation'
+import { useAppDispatch } from '@/store'
 
 const LoginSection = () => {
   const router = useRouter()
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch({ type: 'reset' })
+  }, [])
   return (
     <div className="w-full h-screen flex px-3">
       <div className="m-auto">

@@ -32,7 +32,6 @@ const useCreatePost = () => {
       return insertedData
     } catch (error) {
       setLoading(false)
-      // Handle error here if needed
       return null
     }
   }

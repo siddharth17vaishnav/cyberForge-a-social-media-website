@@ -18,10 +18,8 @@ export const CreatePosts = () => {
   const [description, setDescription] = useState<string>('')
   const dispatch = useAppDispatch()
   const { addPost, loading } = useCreatePost()
-  const {
-    modalsSlice: { createPost },
-    userSlice: { id }
-  } = useSelector((state: RootReduxState) => state)
+  const { createPost } = useSelector((state: RootReduxState) => state.modalsSlice)
+  const { id } = useSelector((state: RootReduxState) => state.userSlice)
   const onClose = () => {
     dispatch(setModals({ createPost: false }))
     setFile([])

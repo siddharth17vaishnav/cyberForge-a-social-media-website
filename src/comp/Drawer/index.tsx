@@ -1,8 +1,6 @@
 'use client'
 import assets from '@/assets'
 import { RootReduxState } from '@/store/redux.types'
-import { removeCookie } from '@/utils/cokkies'
-import supabase from '@/utils/supabase'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { BiHomeAlt2, BiSearchAlt2, BiMessageDetail } from 'react-icons/bi'
@@ -76,20 +74,13 @@ const Drawer = () => {
             )
           })}
         </div>
-        <div className="flex px-8 py-2 gap-2 cursor-pointer hover:bg-[#F3F3F3] ">
+        <div
+          className="flex px-8 py-2 gap-2 cursor-pointer hover:bg-[#F3F3F3] "
+          onClick={async () => dispatch(setModals({ logout: true }))}>
           <div className="self-center text-xl">
             <HiOutlineLogout />
           </div>
-          <div
-            className="self-center text-xl"
-            onClick={async () =>
-              await supabase.auth.signOut().then(() => {
-                router.push('/auth')
-                removeCookie('auth_token')
-              })
-            }>
-            Logout
-          </div>
+          <div className="self-center text-xl">Logout</div>
         </div>
       </div>
     </div>

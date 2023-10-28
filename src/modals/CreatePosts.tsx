@@ -11,6 +11,7 @@ import { BiImages } from 'react-icons/bi'
 import { Textarea } from '@/components/ui/textarea'
 import useCreatePost from '@/api/post/useCreatePost'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { postApi } from '@/store/postApi'
 
 export const CreatePosts = () => {
   const [file, setFile] = useState<File[]>([])
@@ -57,6 +58,7 @@ export const CreatePosts = () => {
       description
     }
     await addPost({ data, image: file[0] }).then(() => {
+      dispatch(postApi.util.invalidateTags(['posts']))
       dispatch(setModals({ createPost: false }))
     })
   }

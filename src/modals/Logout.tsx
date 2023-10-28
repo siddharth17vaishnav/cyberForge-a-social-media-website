@@ -24,10 +24,9 @@ export const Logout = () => {
     })
   }
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="m-5">
-        <p className="font-semibold text-md">Are you sure want to logout?</p>
-        <div className="flex gap-4 my-4 mx-auto w-full justify-center">
+    <Modal title="Are you sure want to logout?" isOpen={isOpen} onClose={onClose}>
+      <div className="  ">
+        <div className="flex gap-4 mt-4 mx-auto w-full justify-center">
           <Button onClick={handleLogout}>Logout</Button>
           <Button variant={'destructive'} onClick={onClose}>
             Cancel

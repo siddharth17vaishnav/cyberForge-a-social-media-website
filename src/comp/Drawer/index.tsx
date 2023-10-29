@@ -16,7 +16,14 @@ const Drawer = () => {
   const dispatch = useAppDispatch()
   const userDetails = useSelector((state: RootReduxState) => state.userSlice)
   const options = [
-    { id: 1, title: 'Home', icon: <BiHomeAlt2 />, isActive: pathName === '/', link: '/' },
+    {
+      id: 1,
+      title: 'Home',
+      icon: <BiHomeAlt2 />,
+      isActive: pathName === '/',
+      link: '/',
+      onClick: () => router.replace('/')
+    },
     {
       id: 2,
       title: 'Search',

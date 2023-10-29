@@ -8,7 +8,7 @@ const postApi = createApi({
   endpoints: builder => ({
     getPosts: builder.query({
       queryFn: async () => {
-        const { data, error } = await supabase.from('posts').select()
+        const { data, error } = await supabase.from('posts').select('*, user_profiles(*)')
         if (error) {
           throw toast.error(error.message)
         }

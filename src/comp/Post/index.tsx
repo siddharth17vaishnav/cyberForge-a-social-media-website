@@ -12,6 +12,11 @@ export interface PostProps {
   id: number
   image: string
   user_id: number
+  user_profiles: {
+    id: number
+    user_name: string
+    profile: string
+  }
 }
 
 interface Props {
@@ -25,14 +30,16 @@ const Post = ({ post }: Props) => {
       <div className="flex justify-between">
         <div className="flex gap-3">
           <Image
-            src={assets.images.DUMMY_PROFILE}
+            src={
+              post.user_profiles.profile ? post.user_profiles.profile : assets.images.DUMMY_PROFILE
+            }
             alt={'post-user-image'}
             width={50}
             height={50}
             className="rounded-full w-[50px] h-[50px]"
           />
           <div className="">
-            <h5 className="font-bold">code.siddahrth</h5>
+            <h5 className="font-bold">{post.user_profiles.user_name}</h5>
             <p className="text-[12px] font-semibold">2d</p>
           </div>
         </div>

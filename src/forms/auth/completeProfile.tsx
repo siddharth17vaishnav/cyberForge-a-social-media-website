@@ -142,7 +142,10 @@ const CompleteProfileForm = () => {
                 onBlur={() => setFieldTouched('userName', true)}
               />
               <Error
-                error={(touched.userName && errors.userName) || userNameMesssage.message}
+                error={
+                  (touched.userName && errors.userName) ||
+                  (touched.userName && userNameMesssage.message)
+                }
                 status={userNameMesssage.status}
               />
             </div>

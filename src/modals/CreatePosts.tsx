@@ -3,15 +3,14 @@ import Modal from '@/comp/Modal'
 import { Button } from '@/components/ui/button'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
-import { RootReduxState } from '@/store/redux.types'
 import { useDropzone } from 'react-dropzone'
-import { useSelector } from 'react-redux'
 import Image from 'next/image'
 import { BiImages } from 'react-icons/bi'
 import { Textarea } from '@/components/ui/textarea'
 import useCreatePost from '@/api/post/useCreatePost'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { postApi } from '@/store/postApi'
+import { useStateSelector } from '@/store/root.reducer'
 
 export const CreatePosts = () => {
   const [file, setFile] = useState<File[]>([])
@@ -19,8 +18,8 @@ export const CreatePosts = () => {
   const [description, setDescription] = useState<string>('')
   const dispatch = useAppDispatch()
   const { addPost, loading } = useCreatePost()
-  const { createPost } = useSelector((state: RootReduxState) => state.modalsSlice)
-  const { id } = useSelector((state: RootReduxState) => state.userSlice)
+  const { createPost } = useStateSelector(state => state.modalsSlice)
+  const { id } = useStateSelector(state => state.userSlice)
   const onClose = () => {
     dispatch(setModals({ createPost: false }))
     setFile([])

@@ -1,20 +1,19 @@
 'use client'
 import assets from '@/assets'
-import { RootReduxState } from '@/store/redux.types'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { BiHomeAlt2, BiSearchAlt2, BiMessageDetail } from 'react-icons/bi'
 import { HiOutlineLogout } from 'react-icons/hi'
-import { useSelector } from 'react-redux'
 import { IoCreateOutline } from 'react-icons/io5'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
+import { useStateSelector } from '@/store/root.reducer'
 
 const Drawer = () => {
   const pathName = usePathname()
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const userDetails = useSelector((state: RootReduxState) => state.userSlice)
+  const userDetails = useStateSelector(state => state.userSlice)
   const options = [
     {
       id: 1,

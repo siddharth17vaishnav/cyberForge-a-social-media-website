@@ -1,13 +1,12 @@
 'use client'
 import assets from '@/assets'
 import { Button } from '@/components/ui/button'
-import { RootReduxState } from '@/store/redux.types'
+import { useStateSelector } from '@/store/root.reducer'
 import Image from 'next/image'
-import { useSelector } from 'react-redux'
 import { GiHadesSymbol } from 'react-icons/gi'
 
 const ProfileHeader = () => {
-  const { first_name, last_name, profile } = useSelector((state: RootReduxState) => state.userSlice)
+  const { first_name, last_name, profile } = useStateSelector(state => state.userSlice)
   return (
     <>
       <div className="flex gap-[40px]">

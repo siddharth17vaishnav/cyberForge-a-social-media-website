@@ -6,11 +6,11 @@ import { TfiCommentAlt } from 'react-icons/tfi'
 import { FcLike } from 'react-icons/fc'
 import { AiOutlineHeart } from 'react-icons/ai'
 import { postApi, useLazyDisLikePostQuery, useLazyLikePostQuery } from '@/store/postApi'
-import { useSelector } from 'react-redux'
-import { RootReduxState } from '@/store/redux.types'
 import { useAppDispatch } from '@/store'
 import { formatLikeCount, formatPostCreationTime } from '@/utils'
 import { Tables } from '@/types/gen/supabase.table'
+import { setModals } from '@/store/Modals/modals.slice'
+import { useStateSelector } from '@/store/root.reducer'
 
 export interface PostProps extends Tables<'posts'> {
   user_profiles: Tables<'user_profiles'>
@@ -26,7 +26,7 @@ const Post = ({ post }: Props) => {
   const [likePost] = useLazyLikePostQuery()
   const [disLikePost] = useLazyDisLikePostQuery()
   const [showFullText, setShowFulltext] = useState(false)
-  const { id } = useSelector((state: RootReduxState) => state.userSlice)
+  const { id } = useStateSelector(state => state.userSlice)
 
   const handleLikePost = () => {
     const data = {
@@ -64,7 +64,10 @@ const Post = ({ post }: Props) => {
             </p>
           </div>
         </div>
-        <CiMenuKebab />
+        <CiMenuKebab
+          className="cursor-pointer"
+          onClick={() => dispatch(setModals({ postOptions: true }))}
+        />
       </div>
       <div className="relative w-full h-[450px] mt-3 ">
         <Image src={post.image!} alt="feed-post" fill className="rounded 	" />

@@ -3,7 +3,8 @@ import { ModalsType } from './modals.types'
 
 const initialState: ModalsType = {
   createPost: false,
-  logout: false
+  logout: false,
+  postOptions: false
 }
 
 const modalsSlice = createSlice({

@@ -2,17 +2,16 @@ import Modal from '@/comp/Modal'
 import { Button } from '@/components/ui/button'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
-import { RootReduxState } from '@/store/redux.types'
+import { useStateSelector } from '@/store/root.reducer'
 import { removeCookie } from '@/utils/cokkies'
 import supabase from '@/utils/supabase'
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useSelector } from 'react-redux'
 
 export const Logout = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
-  const isOpen = useSelector((state: RootReduxState) => state.modalsSlice.logout)
+  const isOpen = useStateSelector(state => state.modalsSlice.logout)
   const onClose = () => {
     dispatch(setModals({ logout: false }))
   }

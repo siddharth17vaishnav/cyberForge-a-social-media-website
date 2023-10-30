@@ -39,6 +39,28 @@ const postApi = createApi({
       providesTags: ['posts']
     }),
 
+    getPostByUserid: builder.query({
+      queryFn: async id => {
+        const { data, error } = await supabase
+          .from('posts')
+          .select('*, user_profiles(*)')
+          .eq('user_id', id)
+          .order('created_at', { ascending: false })
+        if (error) throw toast.error(error.message)
+        return { data }
+      }
+    }),
+    deletePost: builder.mutation({
+      queryFn: async ({ id, image }) => {
+        await supabase.storage.from('posts').remove([`public/${image}`])
+        const { data, error } = await supabase.from('posts').delete().eq('id', id)
+        if (error) {
+          throw toast.error(error.message)
+        }
+        return { data: data ?? [] }
+      }
+    }),
+
     likePost: builder.query({
       queryFn: async data => {
         const { data: res, error } = await supabase.from('post_likes').insert(data).select()
@@ -113,6 +135,8 @@ export const {
   useLazyDisLikePostQuery,
   useGetCommentsQuery,
   useAddCommentMutation,
-  useDeleteCommentMutation
+  useDeleteCommentMutation,
+  useLazyGetPostByUseridQuery,
+  useDeletePostMutation
 } = postApi
 export { postApi }

@@ -1,4 +1,3 @@
-'use client'
 import Drawer from '@/comp/Drawer'
 import { useAppDispatch } from '@/store'
 import { setAccount } from '@/store/User/user.slice'
@@ -20,10 +19,11 @@ const MainLayout = ({ children }: Props) => {
         .select('*')
         .eq('email', String(email))
         .then(({ data: userData }) => {
-          userData &&
+
+          !!userData &&
             dispatch(
               setAccount({
-                id: userData[0].id,
+                id: userData[0]?.id,
                 user_name: String(userData[0]?.user_name),
                 first_name: String(userData[0]?.first_name),
                 last_name: String(userData[0]?.last_name),

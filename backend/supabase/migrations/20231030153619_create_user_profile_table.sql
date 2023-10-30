@@ -11,3 +11,7 @@ create table
     constraint unique_email unique (email),
     constraint unique_user_name unique (user_name)
   ) tablespace pg_default;
+
+  alter  table public.user_profiles enable row level security;
+
+  create policy "Access All" on public.user_profiles for all using ( true );

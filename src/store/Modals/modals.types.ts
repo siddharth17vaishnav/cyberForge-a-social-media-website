@@ -1,6 +1,6 @@
 export interface ModalsType {
-  [key: string]: boolean
+  [key: string]: boolean | { id: number; value: boolean }
   createPost: boolean
   logout: boolean
-  postOptions: boolean
+  postOptions: { id: number; value: boolean }
 }

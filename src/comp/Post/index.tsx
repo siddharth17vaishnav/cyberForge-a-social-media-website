@@ -66,7 +66,7 @@ const Post = ({ post }: Props) => {
         </div>
         <CiMenuKebab
           className="cursor-pointer"
-          onClick={() => dispatch(setModals({ postOptions: true }))}
+          onClick={() => dispatch(setModals({ postOptions: { id: post.id, value: true } }))}
         />
       </div>
       <div className="relative w-full h-[450px] mt-3 ">

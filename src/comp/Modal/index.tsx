@@ -14,6 +14,7 @@ interface Props {
   title?: string
   width?: string
   hideclose?: boolean
+  removePadding?: boolean
 }
 
 export default function Modal({
@@ -22,11 +23,16 @@ export default function Modal({
   title,
   onClose,
   width = '',
-  hideclose = false
+  hideclose = false,
+  removePadding = false
 }: Props) {
   return (
     <Dialog open={isOpen}>
-      <DialogContent onClose={onClose} className={width} hideclose={hideclose}>
+      <DialogContent
+        onClose={onClose}
+        className={width}
+        hideclose={hideclose}
+        removePadding={removePadding}>
         <DialogHeader>
           <DialogTitle className="self-center">{title}</DialogTitle>
           <DialogDescription>{children}</DialogDescription>

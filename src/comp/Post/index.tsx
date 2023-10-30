@@ -27,8 +27,10 @@ const Post = ({ post }: Props) => {
   const [disLikePost] = useLazyDisLikePostQuery()
   const [showFullText, setShowFulltext] = useState(false)
   const { id } = useStateSelector(state => state.userSlice)
+  const [isLiked, setIsLiked] = useState(post.likes.map(i => i.user_id).includes(id) || false)
 
   const handleLikePost = () => {
+    setIsLiked(true)
     const data = {
       post_id: post.id,
       user_id: id
@@ -37,6 +39,7 @@ const Post = ({ post }: Props) => {
     dispatch(postApi.util.invalidateTags(['posts']))
   }
   const handleDislikePost = () => {
+    setIsLiked(false)
     const data = {
       postId: post.id,
       userId: id
@@ -73,14 +76,18 @@ const Post = ({ post }: Props) => {
         <Image src={post.image!} alt="feed-post" fill className="rounded 	" />
       </div>
       <div className="mt-2 ml-1 flex gap-3">
-        {!post.likes.map(i => i.user_id).includes(id) ? (
+        {!isLiked ? (
           <AiOutlineHeart fontSize={21} onClick={handleLikePost} className="cursor-pointer" />
         ) : (
           <FcLike fontSize={21} className="mt-[-2px] cursor-pointer" onClick={handleDislikePost} />
         )}
-        <TfiCommentAlt fontSize={18} className="self-center" />
+        <TfiCommentAlt
+          fontSize={18}
+          className="self-center cursor-pointer"
+          onClick={() => dispatch(setModals({ commentSection: { id: post.id, value: true } }))}
+        />
       </div>
-      <div className="ml-1 text-[12px]">{formatLikeCount(post.likes?.length || 0)} likes</div>
+      <div className="mt-2 ml-1 text-[12px]">{formatLikeCount(post.likes?.length || 0)} likes</div>
       <div className="ml-1 text-[12px]">
         {!showFullText && post?.description!.length > 150
           ? post!.description?.substring(0, 150) + '...'

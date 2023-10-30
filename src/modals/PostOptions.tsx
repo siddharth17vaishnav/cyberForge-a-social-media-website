@@ -47,15 +47,14 @@ const PostOptions = () => {
       <div className="w-full flex flex-col  ">
         {options.map((option, index) => {
           return (
-            <>
+            <div key={option.id}>
               <div
-                key={option.id}
                 className="w-full [text-align-last:center] text-md text-black cursor-pointer hover:bg-stone-200 py-4"
                 onClick={option.onclick}>
                 {option.label}
               </div>
               {index !== options.length - 1 && <Separator />}
-            </>
+            </div>
           )
         })}
       </div>

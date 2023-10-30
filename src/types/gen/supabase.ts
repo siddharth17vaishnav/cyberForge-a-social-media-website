@@ -3,6 +3,43 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export interface Database {
   public: {
     Tables: {
+      post_comments: {
+        Row: {
+          comment: string
+          created_at: string
+          id: number
+          post_id: number
+          user_id: number
+        }
+        Insert: {
+          comment: string
+          created_at?: string
+          id?: number
+          post_id: number
+          user_id: number
+        }
+        Update: {
+          comment?: string
+          created_at?: string
+          id?: number
+          post_id?: number
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'post_comments_post_id_fkey'
+            columns: ['post_id']
+            referencedRelation: 'post_likes'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'post_comments_user_id_fkey'
+            columns: ['user_id']
+            referencedRelation: 'user_profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       post_likes: {
         Row: {
           created_at: string

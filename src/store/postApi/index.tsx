@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 
 const postApi = createApi({
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['posts'],
+  tagTypes: ['posts', 'comments'],
   endpoints: builder => ({
     getPosts: builder.query({
       queryFn: async () => {
@@ -60,9 +60,59 @@ const postApi = createApi({
         }
         return { data: res ?? [] }
       }
+    }),
+    getComments: builder.query({
+      queryFn: async ({ postId }) => {
+        const { data, error } = await supabase.from('post_comments').select().eq('post_id', postId)
+        const response =
+          data &&
+          (await Promise.all(
+            data?.map(async item => {
+              const { data: user } = await supabase
+                .from('user_profiles')
+                .select()
+                .eq('id', item.user_id)
+              return { ...item, user: user }
+            })
+          ))
+        if (error) throw toast.error(error.message)
+
+        return { data: response ?? [] }
+      },
+      providesTags: ['comments']
+    }),
+    addComment: builder.mutation({
+      queryFn: async data => {
+        const { data: res, error } = await supabase.from('post_comments').insert(data).select()
+        if (error) {
+          throw toast.error(error.message)
+        }
+        return { data: res ?? [] }
+      },
+      invalidatesTags: ['comments']
+    }),
+    deleteComment: builder.mutation({
+      queryFn: async commentId => {
+        const { data: res, error } = await supabase
+          .from('post_comments')
+          .delete()
+          .eq('id', commentId)
+        if (error) {
+          throw toast.error(error.message)
+        }
+        return { data: res ?? [] }
+      },
+      invalidatesTags: ['comments']
     })
   })
 })
 
-export const { useGetPostsQuery, useLazyLikePostQuery, useLazyDisLikePostQuery } = postApi
+export const {
+  useGetPostsQuery,
+  useLazyLikePostQuery,
+  useLazyDisLikePostQuery,
+  useGetCommentsQuery,
+  useAddCommentMutation,
+  useDeleteCommentMutation
+} = postApi
 export { postApi }

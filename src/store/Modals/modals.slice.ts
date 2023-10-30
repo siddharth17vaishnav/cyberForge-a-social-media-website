@@ -1,20 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { ModalsType } from './modals.types'
 
+interface PayloadProps {
+  [key: string]: boolean | { id: number; value: boolean }
+}
 const initialState: ModalsType = {
   createPost: false,
   logout: false,
-  postOptions: { id: 0, value: false }
+  postOptions: { id: 0, value: false },
+  commentSection: { id: 0, value: false }
 }
 
 const modalsSlice = createSlice({
   name: 'modals',
   initialState,
   reducers: {
-    setModals: (
-      state,
-      { payload }: { payload: Record<string, boolean | { id: number; value: boolean }> }
-    ) => {
+    setModals: (state, { payload }: { payload: PayloadProps }) => {
       Object.keys(payload).forEach(key => {
         state[key] = payload[key]
       })

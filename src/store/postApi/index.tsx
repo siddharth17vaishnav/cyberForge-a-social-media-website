@@ -11,6 +11,7 @@ const postApi = createApi({
         const { data: postsData, error: PostsError } = await supabase
           .from('posts')
           .select('*, user_profiles(*)')
+          .order('created_at', { ascending: false })
 
         const postIds = postsData?.map(post => post.id) ?? []
 

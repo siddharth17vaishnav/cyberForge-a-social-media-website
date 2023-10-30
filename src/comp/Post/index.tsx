@@ -10,23 +10,11 @@ import { useSelector } from 'react-redux'
 import { RootReduxState } from '@/store/redux.types'
 import { useAppDispatch } from '@/store'
 import { formatLikeCount, formatPostCreationTime } from '@/utils'
+import { Tables } from '@/types/gen/supabase.table'
 
-export interface PostProps {
-  created_at: Date
-  description: string
-  id: number
-  image: string
-  user_id: number
-  user_profiles: {
-    id: number
-    user_name: string
-    profile: string
-  }
-  likes: {
-    id: number
-    post_id: number
-    user_id: number
-  }[]
+export interface PostProps extends Tables<'posts'> {
+  user_profiles: Tables<'user_profiles'>
+  likes: Tables<'post_likes'>[]
 }
 
 interface Props {
@@ -71,13 +59,15 @@ const Post = ({ post }: Props) => {
           />
           <div className="">
             <h5 className="font-bold">{post.user_profiles.user_name}</h5>
-            <p className="text-[12px] font-semibold">{formatPostCreationTime(post.created_at)}</p>
+            <p className="text-[12px] font-semibold">
+              {formatPostCreationTime(new Date(post.created_at))}
+            </p>
           </div>
         </div>
         <CiMenuKebab />
       </div>
       <div className="relative w-full h-[450px] mt-3 ">
-        <Image src={post.image} alt="feed-post" fill className="rounded object-contain	" />
+        <Image src={post.image!} alt="feed-post" fill className="rounded 	" />
       </div>
       <div className="mt-2 ml-1 flex gap-3">
         {!post.likes.map(i => i.user_id).includes(id) ? (
@@ -89,11 +79,11 @@ const Post = ({ post }: Props) => {
       </div>
       <div className="ml-1 text-[12px]">{formatLikeCount(post.likes?.length || 0)} likes</div>
       <div className="ml-1 text-[12px]">
-        {!showFullText && post.description.length > 150
-          ? post.description.substring(0, 150) + '...'
+        {!showFullText && post?.description!.length > 150
+          ? post!.description?.substring(0, 150) + '...'
           : post.description}
       </div>
-      {post.description.length > 150 && (
+      {post.description!.length > 150 && (
         <div
           className="ml-1 text-[12px] font-semibold cursor-pointer"
           onClick={() => setShowFulltext(prev => !prev)}>

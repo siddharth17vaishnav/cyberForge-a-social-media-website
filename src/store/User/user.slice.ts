@@ -1,22 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { UserType } from './user.types'
+import { TablesInsert } from '@/types/gen/supabase.table'
 
-const initialState: UserType = {
-  id: 0,
-  userName: '',
-  firstName: '',
-  lastName: '',
+const initialState: TablesInsert<'user_profiles'> = {
+  id: undefined,
+  user_name: '',
+  first_name: '',
+  last_name: '',
   email: '',
-  profile: ''
+  profile: '',
+  created_at: ''
 }
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setAccount: (state, { payload }: { payload: UserType }) => {
+    setAccount: (state, { payload }: { payload: TablesInsert<'user_profiles'> }) => {
       Object.keys(payload).forEach(key => {
-        state[key] = payload[key]
+        const reduxState = state as Record<string, string | number>
+        const accountPayload = payload as unknown as Record<string, string | number>
+        reduxState[key] = accountPayload[key]
       })
     }
   }

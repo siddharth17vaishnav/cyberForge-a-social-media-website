@@ -1,9 +1,3 @@
-export interface UserType {
-  [key: string]: string | number | undefined
-  id: number
-  userName: string
-  firstName: string
-  lastName: string
-  email: string
-  profile?: string
-}
+import { Tables } from '@/types/gen/supabase.table'
+
+export interface UserType extends Tables<'user_profiles'> {}

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { GiHadesSymbol } from 'react-icons/gi'
 
 const ProfileHeader = () => {
-  const { firstName, lastName, profile } = useSelector((state: RootReduxState) => state.userSlice)
+  const { first_name, last_name, profile } = useSelector((state: RootReduxState) => state.userSlice)
   return (
     <>
       <div className="flex gap-[40px]">
@@ -37,7 +37,7 @@ const ProfileHeader = () => {
           </div>
           <div className="mt-4">
             <p>
-              {firstName} {lastName}
+              {first_name} {last_name}
             </p>
             <div className="flex gap-2 bg-[#F6F6F6] max-w-[fit-content] px-2 py-1 rounded-full">
               <GiHadesSymbol className="self-center" />

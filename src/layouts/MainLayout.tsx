@@ -18,17 +18,18 @@ const MainLayout = ({ children }: Props) => {
       supabase
         .from('user_profiles')
         .select('*')
-        .eq('email', email)
+        .eq('email', String(email))
         .then(({ data: userData }) => {
           userData &&
             dispatch(
               setAccount({
-                id: userData[0]?.id,
-                userName: userData[0]?.user_name,
-                firstName: userData[0]?.first_name,
-                lastName: userData[0]?.last_name,
-                email: userData[0]?.email,
-                profile: userData[0]?.profile
+                id: userData[0].id,
+                user_name: String(userData[0]?.user_name),
+                first_name: String(userData[0]?.first_name),
+                last_name: String(userData[0]?.last_name),
+                email: String(userData[0]?.email),
+                profile: String(userData[0]?.profile),
+                created_at: ''
               })
             )
         })

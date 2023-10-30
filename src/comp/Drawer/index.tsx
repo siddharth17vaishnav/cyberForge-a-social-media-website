@@ -50,7 +50,11 @@ const Drawer = () => {
       title: 'Profile',
       icon: (
         <Image
-          src={!!userDetails.profile ? userDetails.profile : assets.images.DUMMY_PROFILE}
+          src={
+            userDetails.profile !== 'null'
+              ? String(userDetails.profile)
+              : assets.images.DUMMY_PROFILE
+          }
           alt="profile"
           width={20}
           height={20}

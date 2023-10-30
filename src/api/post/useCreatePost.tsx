@@ -1,5 +1,6 @@
 import supabase from '@/utils/supabase'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface Props {
   image: File
@@ -21,12 +22,15 @@ const useCreatePost = () => {
           upsert: false
         })
 
-      const insertedData = await supabase.from('posts').insert({
-        ...data,
-        image:
-          `https://bsluzuktmnydpxshkbxl.supabase.co/storage/v1/object/public/posts/${storageResponse?.data?.path}` ??
-          null
-      })
+      const insertedData = await supabase
+        .from('posts')
+        .insert({
+          ...data,
+          image:
+            `https://bsluzuktmnydpxshkbxl.supabase.co/storage/v1/object/public/posts/${storageResponse?.data?.path}` ??
+            null
+        })
+        .then(() => toast.success('Post Created'))
 
       setLoading(false)
       return insertedData

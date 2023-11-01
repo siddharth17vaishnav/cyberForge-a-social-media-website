@@ -27,7 +27,7 @@ const Post = ({ post }: Props) => {
   const [disLikePost] = useLazyDisLikePostQuery()
   const [showFullText, setShowFulltext] = useState(false)
   const { id } = useStateSelector(state => state.userSlice)
-  const [isLiked, setIsLiked] = useState(post.likes.map(i => i.user_id).includes(id) || false)
+  const [isLiked, setIsLiked] = useState(post?.likes?.map(i => i.user_id).includes(id) || false)
 
   const handleLikePost = () => {
     setIsLiked(true)
@@ -53,7 +53,7 @@ const Post = ({ post }: Props) => {
         <div className="flex gap-3">
           <Image
             src={
-              post.user_profiles.profile ? post.user_profiles.profile : assets.images.DUMMY_PROFILE
+              !!post.user_profiles?.profile ? post.user_profiles.profile : assets.images.DUMMY_PROFILE
             }
             alt={'post-user-image'}
             width={50}
@@ -61,7 +61,7 @@ const Post = ({ post }: Props) => {
             className="rounded-full w-[50px] h-[50px]"
           />
           <div className="">
-            <h5 className="font-bold">{post.user_profiles.user_name}</h5>
+            <h5 className="font-bold">{post.user_profiles?.user_name}</h5>
             <p className="text-[12px] font-semibold">
               {formatPostCreationTime(new Date(post.created_at))}
             </p>

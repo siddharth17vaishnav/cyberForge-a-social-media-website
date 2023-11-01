@@ -26,9 +26,6 @@ const CompleteProfileForm = () => {
   }>({ message: '', status: 'success' })
   const [[selectedImage, file], setSelectedImage] = useState<[string, File | null]>(['', null])
 
-  // useEffect(() => {
-  //   if (!email) router.replace('/auth/signup')
-  // }, [])
   const {
     values: { userName, firstName, lastName },
     errors,
@@ -66,7 +63,7 @@ const CompleteProfileForm = () => {
             first_name: values.firstName,
             last_name: values.lastName,
             profile: file
-              ? `https://bsluzuktmnydpxshkbxl.supabase.co/storage/v1/object/public/profiles/${fileName}`
+              ? `https://localhost:54321/storage/v1/object/public/profiles/${fileName}`
               : null
           },
           { onConflict: 'email' }

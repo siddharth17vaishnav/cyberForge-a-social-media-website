@@ -8,33 +8,9 @@ const postApi = createApi({
   endpoints: builder => ({
     getPosts: builder.query({
       queryFn: async () => {
-        const { data: postsData, error: PostsError } = await supabase
-          .from('posts')
-          .select('*, user_profiles(*)')
-          .order('created_at', { ascending: false })
-
-        const postIds = postsData?.map(post => post.id) ?? []
-
-        const likesData = await Promise.all(
-          postIds.map(async postId => {
-            const { data: postLikes } = await supabase
-              .from('post_likes')
-              .select()
-              .eq('post_id', postId)
-            return { postId, likes: postLikes }
-          })
-        )
-        const postsWithLikes = postsData?.map(post => {
-          const likes = likesData.find(likeInfo => likeInfo.postId === post.id)
-          return {
-            ...post,
-            likes: likes ? likes.likes : []
-          }
-        })
-        if (PostsError) {
-          throw toast.error(PostsError.message)
-        }
-        return { data: postsWithLikes ?? [] }
+        // @ts-ignore
+       const {data} = await supabase.rpc('get_posts_with_likes_and_users')
+        return { data: data ?? [] }
       },
       providesTags: ['posts']
     }),

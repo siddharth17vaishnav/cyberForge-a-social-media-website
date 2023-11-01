@@ -9,3 +9,6 @@ create table
     constraint post_comments_post_id_fkey foreign key (post_id) references posts (id),
     constraint post_comments_user_id_fkey foreign key (user_id) references user_profiles (id)
   ) tablespace pg_default;
+
+    -- DROP POLICY "Access All" ON public.post_comments;
+    create policy "Access All" on public.post_comments for all using ( true );

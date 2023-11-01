@@ -8,3 +8,12 @@ create table
     constraint posts_pkey primary key (id),
     constraint posts_user_id_fkey foreign key (user_id) references user_profiles (id)
   ) tablespace pg_default;
+
+  -- DROP POLICY "Access All" ON public.posts;
+  create policy "Access All" on public.posts for all using ( true );
+
+  insert into storage.buckets (id, name, public) values ('posts', 'posts', true);
+
+  CREATE POLICY "allow posts" ON storage.objects FOR SELECT TO anon USING (bucket_id = 'posts');
+
+  -- create  policy "Access All" on storage.buckets for all using ( true );

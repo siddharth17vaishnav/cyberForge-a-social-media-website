@@ -14,6 +14,7 @@ const Drawer = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const userDetails = useStateSelector(state => state.userSlice)
+  const invalidValues = ["null","undefined"]
   const options = [
     {
       id: 1,
@@ -50,9 +51,9 @@ const Drawer = () => {
       icon: (
         <Image
           src={
-            userDetails.profile !== 'null'
+            ( !invalidValues.includes(userDetails.profile!)
               ? String(userDetails.profile)
-              : assets.images.DUMMY_PROFILE
+              : assets.images.DUMMY_PROFILE ) 
           }
           alt="profile"
           width={20}

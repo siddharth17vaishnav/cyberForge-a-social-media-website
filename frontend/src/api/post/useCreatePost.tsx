@@ -1,3 +1,4 @@
+import { StorageRotues } from '@/contants/routes'
 import supabase from '@/utils/supabase'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -19,19 +20,17 @@ const useCreatePost = () => {
         .from('posts')
         .upload(`public/${data.user_id}/${image?.name}`, image, {
           cacheControl: '3600',
-          upsert: false
+          upsert: true
         })
-
       const insertedData = await supabase
         .from('posts')
         .insert({
           ...data,
           image:
-            `https://bsluzuktmnydpxshkbxl.supabase.co/storage/v1/object/public/posts/${storageResponse?.data?.path}` ??
+            StorageRotues.POST(storageResponse.data?.path as string) ??
             null
         })
         .then(() => toast.success('Post Created'))
-
       setLoading(false)
       return insertedData
     } catch (error) {

@@ -5,5 +5,11 @@
   "license": "MIT",
   "dependencies": {
     "supabase": "^1.106.1"
+  },
+  "scripts": {
+    "permission": "sudo chmod 777 /var/run/docker.sock",
+    "start": "npx supabase start",
+    "stop": "npx supabase stop",
+    "migration": "npx supabase db reset"
   }
 }

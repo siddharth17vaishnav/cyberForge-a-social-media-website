@@ -8,3 +8,6 @@ create table
     constraint post_likes_post_id_fkey foreign key (post_id) references posts (id),
     constraint post_likes_user_id_fkey foreign key (user_id) references user_profiles (id)
   ) tablespace pg_default;
+
+    -- DROP POLICY "Access All" ON public.post_likes;
+    create policy "Access All" on public.post_likes for all using ( true );

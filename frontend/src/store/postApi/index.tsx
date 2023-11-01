@@ -8,8 +8,7 @@ const postApi = createApi({
   endpoints: builder => ({
     getPosts: builder.query({
       queryFn: async () => {
-        // @ts-ignore
-       const {data} = await supabase.rpc('get_posts_with_likes_and_users')
+        const { data } = await supabase.rpc('get_posts' as never)
         return { data: data ?? [] }
       },
       providesTags: ['posts']

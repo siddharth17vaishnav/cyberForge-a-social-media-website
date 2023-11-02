@@ -1,3 +1,4 @@
+import BottomNavigation from '@/comp/BottomNavigation'
 import Drawer from '@/comp/Drawer'
 import { useAppDispatch } from '@/store'
 import { setAccount } from '@/store/User/user.slice'
@@ -43,11 +44,14 @@ const MainLayout = ({ children }: Props) => {
   if (pathName.includes('auth')) return <>{children}</>
   else {
     return (
-      <div className="grid grid-flow-col ">
-        <div className="sticky col-span-1 h-screen border border-r-1 hidden lg:block ">
-          <Drawer />
+      <div className="pb-[10px] md:pb-0">
+        <div className="grid grid-flow-col ">
+          <div className="sticky col-span-1 h-screen border border-r-1 hidden lg:block ">
+            <Drawer />
+          </div>
+          <div className="col-span-4 h-[91vh] p-2">{children}</div>
         </div>
-        <div className="col-span-4 h-screen p-2">{children}</div>
+        <BottomNavigation />
       </div>
     )
   }

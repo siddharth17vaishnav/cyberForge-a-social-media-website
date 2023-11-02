@@ -1,4 +1,10 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export interface Database {
   public: {
@@ -27,16 +33,18 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'post_comments_post_id_fkey'
-            columns: ['post_id']
-            referencedRelation: 'post_likes'
-            referencedColumns: ['id']
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'post_comments_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
+            foreignKeyName: "post_comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -61,16 +69,18 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'post_likes_post_id_fkey'
-            columns: ['post_id']
-            referencedRelation: 'posts'
-            referencedColumns: ['id']
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'post_likes_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
+            foreignKeyName: "post_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -98,10 +108,11 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: 'posts_user_id_fkey'
-            columns: ['user_id']
-            referencedRelation: 'user_profiles'
-            referencedColumns: ['id']
+            foreignKeyName: "posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -140,7 +151,18 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_posts: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: number
+          description: string
+          image: string
+          user_id: number
+          user_profiles: Json
+          created_at: string
+          likes: Json
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

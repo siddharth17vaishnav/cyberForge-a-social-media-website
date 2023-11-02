@@ -2,7 +2,8 @@ import Drawer from '@/comp/Drawer'
 import { useAppDispatch } from '@/store'
 import { setAccount } from '@/store/User/user.slice'
 import supabase from '@/utils/supabase'
-import { usePathname } from 'next/navigation'
+import { deleteCookie } from 'cookies-next'
+import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode, useEffect } from 'react'
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 const MainLayout = ({ children }: Props) => {
   const pathName = usePathname()
+  const router = useRouter()
   const dispatch = useAppDispatch()
   useEffect(() => {
     supabase.auth.getUser().then(session => {
@@ -19,7 +21,6 @@ const MainLayout = ({ children }: Props) => {
         .select('*')
         .eq('email', String(email))
         .then(({ data: userData }) => {
-
           !!userData &&
             dispatch(
               setAccount({
@@ -32,6 +33,10 @@ const MainLayout = ({ children }: Props) => {
                 created_at: ''
               })
             )
+          if (session.error) {
+            router.push('/auth')
+            deleteCookie('auth_token')
+          }
         })
     })
   }, [])

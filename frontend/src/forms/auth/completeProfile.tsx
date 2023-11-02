@@ -14,12 +14,16 @@ import { MdEdit } from 'react-icons/md'
 import useDebounce from '@/hooks/useDebounce'
 import { addCookie, fetchCookie } from '@/utils/cokkies'
 import { deleteCookie } from 'cookies-next'
+import { setAccount } from '@/store/User/user.slice'
+import { useAppDispatch } from '@/store'
+import { StorageRotues } from '@/contants/routes'
 
 const CompleteProfileForm = () => {
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
   const ref = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const dispatch = useAppDispatch()
   const [userNameMesssage, setUserNameMessage] = useState<{
     message: string
     status: 'error' | 'success'
@@ -62,18 +66,32 @@ const CompleteProfileForm = () => {
             user_name: values.userName,
             first_name: values.firstName,
             last_name: values.lastName,
-            profile: file
-              ? `https://localhost:54321/storage/v1/object/public/profiles/${fileName}`
-              : null
+            profile: file ? StorageRotues.PROFILE(fileName) : null
           },
           { onConflict: 'email' }
         )
         .select()
-        .then(() => {
+        .then(async () => {
           const token = fetchCookie('token')
           addCookie('auth_token', token as string)
           deleteCookie('token')
-          router.push('/')
+          await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('email', String(email))
+            .then(({ data: userData }) => {
+              userData &&
+                dispatch(
+                  setAccount({
+                    id: userData[0].id,
+                    first_name: userData[0].first_name,
+                    last_name: userData[0].last_name,
+                    email: userData[0].email,
+                    profile: userData[0].profile
+                  })
+                )
+              router.push('/')
+            })
         })
     }
   })

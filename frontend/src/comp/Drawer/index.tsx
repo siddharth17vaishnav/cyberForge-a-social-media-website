@@ -9,12 +9,12 @@ import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useStateSelector } from '@/store/root.reducer'
 
+export const invalidImageValues = ['null', 'undefined']
 const Drawer = () => {
   const pathName = usePathname()
   const router = useRouter()
   const dispatch = useAppDispatch()
   const userDetails = useStateSelector(state => state.userSlice)
-  const invalidValues = ["null","undefined"]
   const options = [
     {
       id: 1,
@@ -51,9 +51,9 @@ const Drawer = () => {
       icon: (
         <Image
           src={
-            ( !invalidValues.includes(userDetails.profile!)
+            !invalidImageValues.includes(userDetails.profile!)
               ? String(userDetails.profile)
-              : assets.images.DUMMY_PROFILE ) 
+              : assets.images.DUMMY_PROFILE
           }
           alt="profile"
           width={20}

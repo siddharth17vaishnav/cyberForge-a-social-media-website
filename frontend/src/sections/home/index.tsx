@@ -1,10 +1,13 @@
 import Loader from '@/comp/Loader'
 import Post, { PostProps } from '@/comp/Post'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useAppDispatch } from '@/store'
+import { setModals } from '@/store/Modals/modals.slice'
 import { useGetPostsQuery } from '@/store/postApi'
 
 const HomeSection = () => {
   const { data: postData, isLoading } = useGetPostsQuery(undefined)
+  const dispatch = useAppDispatch()
   return (
     <>
       {isLoading ? (
@@ -12,12 +15,21 @@ const HomeSection = () => {
       ) : (
         <ScrollArea className="h-[99vh] w-full rounded-md p-4">
           <div className=" mx-auto pt-12 pb-10">
-            {postData
-              ? Array.from(postData).map(res => {
-                  const posts = res as PostProps
-                  return <Post key={posts.id} post={posts} />
-                })
-              : null}
+            {postData && postData.length > 0 ? (
+              Array.from(postData).map(res => {
+                const posts = res as PostProps
+                return <Post key={posts.id} post={posts} />
+              })
+            ) : (
+              <div className="w-full h-full flex justify-center items-center">
+                No Posts found,&nbsp;
+                <span
+                  className="cursor-pointer underline"
+                  onClick={() => dispatch(setModals({ createPost: true }))}>
+                  Add some
+                </span>
+              </div>
+            )}
           </div>
         </ScrollArea>
       )}

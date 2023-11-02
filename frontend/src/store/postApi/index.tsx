@@ -8,7 +8,7 @@ const postApi = createApi({
   endpoints: builder => ({
     getPosts: builder.query({
       queryFn: async () => {
-        const { data } = await supabase.rpc('get_posts' as never)
+        const { data } = await supabase.rpc('get_posts')
         return { data: data ?? [] }
       },
       providesTags: ['posts']
@@ -16,12 +16,12 @@ const postApi = createApi({
 
     getPostByUserid: builder.query({
       queryFn: async id => {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('posts')
           .select('*, user_profiles(*)')
           .eq('user_id', id)
           .order('created_at', { ascending: false })
-        if (error) throw toast.error(error.message)
+
         return { data }
       }
     }),
@@ -111,6 +111,7 @@ export const {
   useGetCommentsQuery,
   useAddCommentMutation,
   useDeleteCommentMutation,
+  useGetPostByUseridQuery,
   useLazyGetPostByUseridQuery,
   useDeletePostMutation
 } = postApi

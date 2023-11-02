@@ -1,4 +1,5 @@
 import assets from '@/assets'
+import { invalidImageValues } from '@/comp/Drawer'
 import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -49,7 +50,6 @@ const CommentSection = () => {
       refetch()
     }, 1000)
   }
-
   return (
     <Modal title="Comments" isOpen={value} onClose={onClose}>
       <div className="flex flex-col gap-3 mt-4">
@@ -65,7 +65,11 @@ const CommentSection = () => {
                 return (
                   <div className="flex gap-3" key={comment.id}>
                     <Image
-                      src={user!.profile ? (user!.profile as string) : assets.images.DUMMY_PROFILE}
+                      src={
+                        !invalidImageValues.includes(user!.profile as string)
+                          ? (user!.profile as string)
+                          : assets.images.DUMMY_PROFILE
+                      }
                       alt="post-user-image"
                       width={50}
                       height={50}

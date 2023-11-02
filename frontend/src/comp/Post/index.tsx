@@ -11,6 +11,7 @@ import { formatLikeCount, formatPostCreationTime } from '@/utils'
 import { Tables } from '@/types/gen/supabase.table'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useStateSelector } from '@/store/root.reducer'
+import { invalidImageValues } from '../Drawer'
 
 export interface PostProps extends Tables<'posts'> {
   user_profiles: Tables<'user_profiles'>
@@ -27,25 +28,21 @@ const Post = ({ post }: Props) => {
   const [disLikePost] = useLazyDisLikePostQuery()
   const [showFullText, setShowFulltext] = useState(false)
   const { id } = useStateSelector(state => state.userSlice)
-  const [isLiked, setIsLiked] = useState(post?.likes?.map(i => i.user_id).includes(id) || false)
+  const likeIds = post?.likes?.map(i => i.user_id) || []
 
   const handleLikePost = () => {
-    setIsLiked(true)
     const data = {
       post_id: post.id,
       user_id: id
     }
-    likePost(data)
-    dispatch(postApi.util.invalidateTags(['posts']))
+    likePost(data).then(() => dispatch(postApi.util.invalidateTags(['posts'])))
   }
   const handleDislikePost = () => {
-    setIsLiked(false)
     const data = {
       postId: post.id,
       userId: id
     }
-    disLikePost(data)
-    dispatch(postApi.util.invalidateTags(['posts']))
+    disLikePost(data).then(() => dispatch(postApi.util.invalidateTags(['posts'])))
   }
   return (
     <div className="w-[full] lg:w-[60%] mb-7">
@@ -53,7 +50,9 @@ const Post = ({ post }: Props) => {
         <div className="flex gap-3">
           <Image
             src={
-              !!post.user_profiles?.profile ? post.user_profiles.profile : assets.images.DUMMY_PROFILE
+              !invalidImageValues.includes(post.user_profiles?.profile as string)
+                ? String(post.user_profiles.profile)
+                : assets.images.DUMMY_PROFILE
             }
             alt={'post-user-image'}
             width={50}
@@ -76,7 +75,7 @@ const Post = ({ post }: Props) => {
         <Image src={post.image!} alt="feed-post" fill className="rounded 	" />
       </div>
       <div className="mt-2 ml-1 flex gap-3">
-        {!isLiked ? (
+        {!likeIds.includes(id) ? (
           <AiOutlineHeart fontSize={21} onClick={handleLikePost} className="cursor-pointer" />
         ) : (
           <FcLike fontSize={21} className="mt-[-2px] cursor-pointer" onClick={handleDislikePost} />

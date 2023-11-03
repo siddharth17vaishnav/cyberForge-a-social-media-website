@@ -45,13 +45,15 @@ const MainLayout = ({ children }: Props) => {
   else {
     return (
       <div className="pb-[10px] md:pb-0">
-        <div className="grid grid-flow-col ">
+        <div className=" md:grid grid-flow-col ">
           <div className="sticky col-span-1 h-screen border border-r-1 hidden lg:block ">
             <Drawer />
           </div>
           <div className="col-span-4 h-[91vh] p-2">{children}</div>
         </div>
-        <BottomNavigation />
+        <div className="lg:hidden">
+          <BottomNavigation />
+        </div>
       </div>
     )
   }

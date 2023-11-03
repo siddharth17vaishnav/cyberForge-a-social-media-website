@@ -5,10 +5,10 @@ interface Props {
   title: string
   children: ReactNode
 }
-const ToolTip = ({ title, children }: Props) => {
+const CustomTooltip = ({ title, children }: Props) => {
   return (
     <TooltipProvider>
-      <Tooltip>
+      <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent>
           <p>{title}</p>
@@ -18,4 +18,4 @@ const ToolTip = ({ title, children }: Props) => {
   )
 }
 
-export default ToolTip
+export default CustomTooltip

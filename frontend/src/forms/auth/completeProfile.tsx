@@ -66,7 +66,7 @@ const CompleteProfileForm = () => {
             user_name: values.userName,
             first_name: values.firstName,
             last_name: values.lastName,
-            profile: file ? StorageRotues.PROFILE(fileName) : null
+            profile: !!fileName ? StorageRotues.PROFILE(fileName) : null
           },
           { onConflict: 'email' }
         )
@@ -84,6 +84,7 @@ const CompleteProfileForm = () => {
                 dispatch(
                   setAccount({
                     id: userData[0].id,
+                    user_name: userData[0].user_name,
                     first_name: userData[0].first_name,
                     last_name: userData[0].last_name,
                     email: userData[0].email,

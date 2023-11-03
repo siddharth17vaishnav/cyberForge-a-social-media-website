@@ -48,13 +48,14 @@ const LoginForm = () => {
                     dispatch(
                       setAccount({
                         id: userData[0].id,
+                        user_name: userData[0].user_name,
                         first_name: userData[0].first_name,
                         last_name: userData[0].last_name,
                         email: userData[0].email,
                         profile: userData[0].profile
                       })
                     )
-                  addCookie(String(data.session?.access_token), 'auth_token')
+                  addCookie('auth_token', String(data.session?.access_token))
                   router.push('/')
                 })
             })

@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react'
 import { Tables } from '@/types/gen/supabase.table'
 import { useSearchParams } from 'next/navigation'
 import Loader from '@/comp/Loader'
+import Tabs from '@/comp/Tabs'
+
+const tabsOptions = [{ id: 1, title: 'Posts' }]
 
 export interface ProfileDataProps extends Tables<'user_profiles'> {
   posts: Tables<'posts'>[]
@@ -24,13 +27,16 @@ const ProfileSection = () => {
       })
   }, [userId, id])
   return (
-    <div className="max-w-[80%] mx-auto my-4">
+    <div className="max-w-[90%] md:max-w-[80%] mx-auto my-4">
       {isLoading ? (
         <div className="w-full h-[90vh]">
           <Loader />
         </div>
       ) : (
-        <ProfileHeader data={data!} />
+        <>
+          <ProfileHeader data={data!} />
+          <Tabs options={tabsOptions} />
+        </>
       )}
     </div>
   )

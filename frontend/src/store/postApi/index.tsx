@@ -3,6 +3,7 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { toast } from 'sonner'
 
 const postApi = createApi({
+  reducerPath: '/posts',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['posts', 'comments'],
   endpoints: builder => ({

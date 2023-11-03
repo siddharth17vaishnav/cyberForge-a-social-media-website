@@ -29,7 +29,7 @@ const Drawer = () => {
       title: 'Search',
       icon: <BiSearchAlt2 />,
       isActive: pathName.includes('search'),
-      onClick: () => router.replace('/')
+      onClick: () => router.replace('/search')
     },
     {
       id: 3,

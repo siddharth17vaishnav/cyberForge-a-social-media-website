@@ -3,12 +3,16 @@ import { useDispatch } from 'react-redux'
 import { AppDispatch, RESET_STORE } from '@/store/redux.types'
 import rootReducer from '@/store/root.reducer'
 import { postApi } from './postApi'
+import { searchApi } from './searchApi'
+import { userApi } from './UserApi'
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({ immutableCheck: false, serializableCheck: false }).concat(
-      postApi.middleware
+      postApi.middleware,
+      searchApi.middleware,
+      userApi.middleware
     )
 })
 

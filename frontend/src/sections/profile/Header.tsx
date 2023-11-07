@@ -6,6 +6,9 @@ import { ProfileDataProps } from '.'
 import { invalidImageValues } from '@/comp/Drawer'
 import { MdPersonAddAlt1 } from 'react-icons/md'
 import { useSearchParams } from 'next/navigation'
+import { useAddFriendMutation } from '@/store/friendsApi'
+import { useStateSelector } from '@/store/root.reducer'
+import { toast } from 'sonner'
 interface Props {
   data: ProfileDataProps
 }
@@ -13,6 +16,17 @@ interface Props {
 const ProfileHeader = ({ data }: Props) => {
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
+  const { id: userId } = useStateSelector(state => state.userSlice)
+  const [addFriend] = useAddFriendMutation()
+
+  const handleAddFriend = async () => {
+    const data = {
+      to_user_id: id,
+      from_user_id: userId,
+      status: 'pending'
+    }
+    await addFriend(data).then(() => toast.success('Friend Request Sent'))
+  }
   return (
     <>
       <div className="flex gap-[40px]">
@@ -33,7 +47,10 @@ const ProfileHeader = ({ data }: Props) => {
           <div className="flex gap-4">
             <div className="font-semibold pt-1">{data?.user_name}</div>
             {id && (
-              <MdPersonAddAlt1 style={{ alignSelf: 'center', fontSize: 18, cursor: 'pointer' }} />
+              <MdPersonAddAlt1
+                style={{ alignSelf: 'center', fontSize: 18, cursor: 'pointer' }}
+                onClick={handleAddFriend}
+              />
             )}
           </div>
           <div className="flex gap-[50px]">

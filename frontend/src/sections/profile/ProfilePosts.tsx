@@ -1,12 +1,17 @@
 import Loader from '@/comp/Loader'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
-import { useGetPostByUseridQuery } from '@/store/postApi'
+import { useLazyGetPostByIdQuery } from '@/store/postApi'
 import { useStateSelector } from '@/store/root.reducer'
+import { Tables } from '@/types/gen/supabase.table'
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
 import { BsFillHeartFill } from 'react-icons/bs'
+interface DataProps extends Tables<'posts'> {
+  likes: Tables<'post_likes'>[]
+  comments: Tables<'post_comments'>[]
+}
 
 const ProfilePosts = () => {
   const dispatch = useAppDispatch()
@@ -14,9 +19,17 @@ const ProfilePosts = () => {
   const id = searchParams.get('id')
   const { id: userId } = useStateSelector(state => state.userSlice)
   const [zIndex, setZIndex] = useState(0)
-
-  const { data, isLoading: postLoading, isFetching } = useGetPostByUseridQuery(id || userId)
+  const [data, setData] = useState<DataProps[]>()
+  const [getPost, { isLoading: postLoading, isFetching }] = useLazyGetPostByIdQuery()
   const isLoading = postLoading || isFetching
+
+  useEffect(() => {
+    if (id || userId) {
+      getPost(id || userId).then(data => {
+        setData(data as unknown as DataProps[])
+      })
+    }
+  }, [id, userId])
   return (
     <div className="mt-2 max-w-[90%] md:max-w-[80%] mx-auto">
       {isLoading ? (

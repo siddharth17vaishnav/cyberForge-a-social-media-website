@@ -6,13 +6,15 @@ import { postApi } from './postApi'
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import { searchApi } from './searchApi'
 import { userApi } from './UserApi'
+import { friendsApi } from './friendsApi'
 
 const appReducer = combineReducers({
   userSlice,
   modalsSlice,
   [postApi.reducerPath]: postApi.reducer,
   [searchApi.reducerPath]: searchApi.reducer,
-  [userApi.reducerPath]: userApi.reducer
+  [userApi.reducerPath]: userApi.reducer,
+  [friendsApi.reducerPath]: friendsApi.reducer
 })
 
 const rootReducer = (state: any, action: any) => {

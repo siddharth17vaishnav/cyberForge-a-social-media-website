@@ -5,6 +5,7 @@ import rootReducer from '@/store/root.reducer'
 import { postApi } from './postApi'
 import { searchApi } from './searchApi'
 import { userApi } from './UserApi'
+import { friendsApi } from './friendsApi'
 
 const store = configureStore({
   reducer: rootReducer,
@@ -12,7 +13,8 @@ const store = configureStore({
     getDefaultMiddleware({ immutableCheck: false, serializableCheck: false }).concat(
       postApi.middleware,
       searchApi.middleware,
-      userApi.middleware
+      userApi.middleware,
+      friendsApi.middleware
     )
 })
 

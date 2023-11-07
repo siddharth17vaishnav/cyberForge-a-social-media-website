@@ -31,45 +31,48 @@ const postApi = createApi({
 
     getPostByUserid: builder.query({
       queryFn: async id => {
-        const { data: postsData, error: PostsError } = await supabase
-          .from('posts')
-          .select('*, user_profiles(*)')
-          .eq('user_id', id)
-          .order('created_at', { ascending: false })
+        if (id) {
+          const { data: postsData, error: PostsError } = await supabase
+            .from('posts')
+            .select('*, user_profiles(*)')
+            .eq('user_id', id)
+            .order('created_at', { ascending: false })
 
-        const postIds = postsData?.map(post => post.id) ?? []
+          const postIds = postsData?.map(post => post.id) ?? []
 
-        const likesData = await Promise.all(
-          postIds.map(async postId => {
-            const { data: postLikes } = await supabase
-              .from('post_likes')
-              .select()
-              .eq('post_id', postId)
-            return { postId, likes: postLikes }
+          const likesData = await Promise.all(
+            postIds.map(async postId => {
+              const { data: postLikes } = await supabase
+                .from('post_likes')
+                .select()
+                .eq('post_id', postId)
+              return { postId, likes: postLikes }
+            })
+          )
+          const commentData = await Promise.all(
+            postIds.map(async postId => {
+              const { data: postComments } = await supabase
+                .from('post_comments')
+                .select()
+                .eq('post_id', postId)
+              return { postId, comments: postComments }
+            })
+          )
+          const postsWithLikes = postsData?.map(post => {
+            const likes = likesData.find(likeInfo => likeInfo.postId === post.id)
+            const comments = commentData.find(comment => comment.postId === post.id)
+            return {
+              ...post,
+              likes: likes ? likes.likes : [],
+              comments: comments ? comments.comments : []
+            }
           })
-        )
-        const commentData = await Promise.all(
-          postIds.map(async postId => {
-            const { data: postComments } = await supabase
-              .from('post_comments')
-              .select()
-              .eq('post_id', postId)
-            return { postId, comments: postComments }
-          })
-        )
-        const postsWithLikes = postsData?.map(post => {
-          const likes = likesData.find(likeInfo => likeInfo.postId === post.id)
-          const comments = commentData.find(comment => comment.postId === post.id)
-          return {
-            ...post,
-            likes: likes ? likes.likes : [],
-            comments: comments ? comments.comments : []
+          if (PostsError) {
+            throw toast.error(PostsError.message)
           }
-        })
-        if (PostsError) {
-          throw toast.error(PostsError.message)
+          return { data: postsWithLikes ?? [] }
         }
-        return { data: postsWithLikes ?? [] }
+        return { data: [] }
       }
     }),
     deletePost: builder.mutation({
@@ -158,9 +161,10 @@ export const {
   useGetCommentsQuery,
   useAddCommentMutation,
   useDeleteCommentMutation,
-  useGetPostByUseridQuery,
+  useLazyGetPostByIdQuery,
   useLazyGetPostByUseridQuery,
   useDeletePostMutation,
-  useGetPostByIdQuery
+  useGetPostByIdQuery,
+  useGetPostByUseridQuery
 } = postApi
 export { postApi }

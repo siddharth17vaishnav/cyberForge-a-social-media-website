@@ -24,11 +24,12 @@ const ProfileSection = () => {
   const { createPost } = useStateSelector(state => state.modalsSlice)
 
   useEffect(() => {
-    if (userId || id)
+    if (userId || id) {
       getUser(Number(id) ? id : userId).then(({ data }) => {
         const res = data as unknown as ProfileDataProps
         setData(res)
       })
+    }
   }, [userId, id, createPost])
   return (
     <div className="max-w-[90%] md:max-w-[80%] mx-auto my-4">

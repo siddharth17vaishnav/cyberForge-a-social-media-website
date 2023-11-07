@@ -20,9 +20,10 @@ export interface PostProps extends Tables<'posts'> {
 
 interface Props {
   post: PostProps
+  fullWidth?: boolean
 }
 
-const Post = ({ post }: Props) => {
+const Post = ({ post, fullWidth = false }: Props) => {
   const dispatch = useAppDispatch()
   const [likePost] = useLazyLikePostQuery()
   const [disLikePost] = useLazyDisLikePostQuery()
@@ -45,13 +46,14 @@ const Post = ({ post }: Props) => {
     disLikePost(data).then(() => dispatch(postApi.util.invalidateTags(['posts'])))
   }
   return (
-    <div className="w-[full] lg:w-[60%] mb-7">
+    <div className={`w-[full] ${!fullWidth && 'lg:w-[60%]'} mb-7`}>
       <div className="flex justify-between">
         <div className="flex gap-3">
           <Image
             src={
-              !invalidImageValues.includes(post.user_profiles?.profile as string)
-                ? String(post.user_profiles.profile)
+              post?.user_profiles?.profile &&
+              !invalidImageValues.includes(post?.user_profiles?.profile as string)
+                ? String(post?.user_profiles.profile)
                 : assets.images.DUMMY_PROFILE
             }
             alt={'post-user-image'}
@@ -60,19 +62,19 @@ const Post = ({ post }: Props) => {
             className="rounded-full w-[50px] h-[50px]"
           />
           <div className="">
-            <h5 className="font-bold">{post.user_profiles?.user_name}</h5>
+            <h5 className="font-bold">{post?.user_profiles?.user_name}</h5>
             <p className="text-[12px] font-semibold">
-              {formatPostCreationTime(new Date(post.created_at))}
+              {formatPostCreationTime(new Date(post?.created_at))}
             </p>
           </div>
         </div>
         <CiMenuKebab
           className="cursor-pointer"
-          onClick={() => dispatch(setModals({ postOptions: { id: post.id, value: true } }))}
+          onClick={() => dispatch(setModals({ postOptions: { id: post?.id, value: true } }))}
         />
       </div>
       <div className="relative w-full h-[450px] mt-3 ">
-        <Image src={post.image!} alt="feed-post" fill className="rounded 	" />
+        <Image src={post?.image!} alt="feed-post" fill className="rounded 	" />
       </div>
       <div className="mt-2 ml-1 flex gap-3">
         {!likeIds.includes(id) ? (
@@ -83,16 +85,16 @@ const Post = ({ post }: Props) => {
         <TfiCommentAlt
           fontSize={18}
           className="self-center cursor-pointer"
-          onClick={() => dispatch(setModals({ commentSection: { id: post.id, value: true } }))}
+          onClick={() => dispatch(setModals({ commentSection: { id: post?.id, value: true } }))}
         />
       </div>
-      <div className="mt-2 ml-1 text-[12px]">{formatLikeCount(post.likes?.length || 0)} likes</div>
+      <div className="mt-2 ml-1 text-[12px]">{formatLikeCount(post?.likes?.length || 0)} likes</div>
       <div className="ml-1 text-[12px]">
         {!showFullText && post?.description!.length > 150
           ? post!.description?.substring(0, 150) + '...'
-          : post.description}
+          : post?.description}
       </div>
-      {post.description!.length > 150 && (
+      {post?.description!.length > 150 && (
         <div
           className="ml-1 text-[12px] font-semibold cursor-pointer"
           onClick={() => setShowFulltext(prev => !prev)}>

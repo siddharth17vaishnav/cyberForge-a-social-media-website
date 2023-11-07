@@ -5,11 +5,14 @@ import { GiHadesSymbol } from 'react-icons/gi'
 import { ProfileDataProps } from '.'
 import { invalidImageValues } from '@/comp/Drawer'
 import { MdPersonAddAlt1 } from 'react-icons/md'
+import { useSearchParams } from 'next/navigation'
 interface Props {
   data: ProfileDataProps
 }
 
 const ProfileHeader = ({ data }: Props) => {
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
   return (
     <>
       <div className="flex gap-[40px]">
@@ -29,7 +32,9 @@ const ProfileHeader = ({ data }: Props) => {
         <div>
           <div className="flex gap-4">
             <div className="font-semibold pt-1">{data?.user_name}</div>
-            <MdPersonAddAlt1 style={{ alignSelf: 'center', fontSize: 18, cursor: 'pointer' }} />
+            {id && (
+              <MdPersonAddAlt1 style={{ alignSelf: 'center', fontSize: 18, cursor: 'pointer' }} />
+            )}
           </div>
           <div className="flex gap-[50px]">
             <div>

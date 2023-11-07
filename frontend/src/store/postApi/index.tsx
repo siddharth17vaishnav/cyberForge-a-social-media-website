@@ -15,15 +15,61 @@ const postApi = createApi({
       providesTags: ['posts']
     }),
 
+    getPostById: builder.query({
+      queryFn: async id => {
+        const { data, error } = await supabase.from('posts').select('*').eq('id', id)
+        const { data: likesData } = await supabase.from('post_likes').select('*').eq('post_id', id)
+        const { data: userData } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', data![0].user_id)
+        if (error) toast.error(error.message)
+        const resposne = { ...data![0], likes: likesData || [], user_profiles: userData![0] || {} }
+        return { data: resposne || {} }
+      }
+    }),
+
     getPostByUserid: builder.query({
       queryFn: async id => {
-        const { data } = await supabase
+        const { data: postsData, error: PostsError } = await supabase
           .from('posts')
           .select('*, user_profiles(*)')
           .eq('user_id', id)
           .order('created_at', { ascending: false })
 
-        return { data }
+        const postIds = postsData?.map(post => post.id) ?? []
+
+        const likesData = await Promise.all(
+          postIds.map(async postId => {
+            const { data: postLikes } = await supabase
+              .from('post_likes')
+              .select()
+              .eq('post_id', postId)
+            return { postId, likes: postLikes }
+          })
+        )
+        const commentData = await Promise.all(
+          postIds.map(async postId => {
+            const { data: postComments } = await supabase
+              .from('post_comments')
+              .select()
+              .eq('post_id', postId)
+            return { postId, comments: postComments }
+          })
+        )
+        const postsWithLikes = postsData?.map(post => {
+          const likes = likesData.find(likeInfo => likeInfo.postId === post.id)
+          const comments = commentData.find(comment => comment.postId === post.id)
+          return {
+            ...post,
+            likes: likes ? likes.likes : [],
+            comments: comments ? comments.comments : []
+          }
+        })
+        if (PostsError) {
+          throw toast.error(PostsError.message)
+        }
+        return { data: postsWithLikes ?? [] }
       }
     }),
     deletePost: builder.mutation({
@@ -114,6 +160,7 @@ export const {
   useDeleteCommentMutation,
   useGetPostByUseridQuery,
   useLazyGetPostByUseridQuery,
-  useDeletePostMutation
+  useDeletePostMutation,
+  useGetPostByIdQuery
 } = postApi
 export { postApi }

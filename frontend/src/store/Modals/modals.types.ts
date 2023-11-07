@@ -4,4 +4,5 @@ export interface ModalsType {
   logout: boolean
   postOptions: { id: number; value: boolean }
   commentSection: { id: number; value: boolean }
+  viewPost: { id: number; value: boolean }
 }

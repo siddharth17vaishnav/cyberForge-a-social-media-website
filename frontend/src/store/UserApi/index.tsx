@@ -18,7 +18,8 @@ const userApi = createApi({
         const response = { ...userData, posts: postData }
         if (error || postError) toast.error(error?.message)
         return { data: response || [] }
-      }
+      },
+      providesTags: ['user']
     })
   })
 })

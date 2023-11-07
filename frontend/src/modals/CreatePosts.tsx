@@ -11,6 +11,7 @@ import useCreatePost from '@/api/post/useCreatePost'
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { postApi } from '@/store/postApi'
 import { useStateSelector } from '@/store/root.reducer'
+import { userApi } from '@/store/UserApi'
 
 export const CreatePosts = () => {
   const [file, setFile] = useState<File[]>([])
@@ -58,6 +59,7 @@ export const CreatePosts = () => {
     }
     await addPost({ data, image: file[0] }).then(() => {
       dispatch(postApi.util.invalidateTags(['posts']))
+      dispatch(userApi.util.invalidateTags(['user']))
       dispatch(setModals({ createPost: false }))
     })
   }

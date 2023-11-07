@@ -8,7 +8,8 @@ const initialState: ModalsType = {
   createPost: false,
   logout: false,
   postOptions: { id: 0, value: false },
-  commentSection: { id: 0, value: false }
+  commentSection: { id: 0, value: false },
+  viewPost: { id: 0, value: false }
 }
 
 const modalsSlice = createSlice({

@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ReduxProvider>
       <Toaster />
-      <MainLayout>{loading ? <Loader /> : <Component {...pageProps} />}</MainLayout>
+      <MainLayout>{loading ? <div className='w-full h-screen'><Loader /></div> : <Component {...pageProps} />}</MainLayout>
     </ReduxProvider>
   )
 }

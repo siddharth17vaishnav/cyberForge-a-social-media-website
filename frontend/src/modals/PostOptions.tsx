@@ -1,3 +1,4 @@
+import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
 import { Separator } from '@/components/ui/separator'
 import { useAppDispatch } from '@/store'
@@ -12,7 +13,7 @@ const PostOptions = () => {
   const { id } = useStateSelector(state => state.userSlice)
   const { postOptions } = useStateSelector(state => state.modalsSlice)
   const onClose = () => dispatch(setModals({ postOptions: { id: 0, value: false } }))
-  const { data: postData } = useGetPostByUseridQuery(id)
+  const { data: postData, isLoading } = useGetPostByUseridQuery(id)
 
   const postIds = postData?.map(i => i.id) ?? []
 
@@ -81,7 +82,7 @@ const PostOptions = () => {
   return (
     <Modal hideclose removePadding isOpen={postOptions.value} onClose={onClose}>
       <div className="w-full flex flex-col  ">
-        {options.map((option, index) => {
+        {isLoading ? <Loader /> : options.map((option, index) => {
           return (
             <div key={option.id}>
               {option.isVisible && (

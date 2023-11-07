@@ -1,5 +1,6 @@
 import BottomNavigation from '@/comp/BottomNavigation'
 import Drawer from '@/comp/Drawer'
+import HeaderForMobile from '@/comp/common/HeaderForMobile'
 import { useAppDispatch } from '@/store'
 import { setAccount } from '@/store/User/user.slice'
 import supabase from '@/utils/supabase'
@@ -45,6 +46,7 @@ const MainLayout = ({ children }: Props) => {
   else {
     return (
       <div className="pb-[10px] md:pb-0">
+        <HeaderForMobile />
         <div className=" md:grid grid-flow-col ">
           <div className="sticky col-span-1 h-screen border border-r-1 hidden lg:block ">
             <Drawer />

@@ -8,6 +8,7 @@ import { IoCreateOutline } from 'react-icons/io5'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useStateSelector } from '@/store/root.reducer'
+import { IoNotificationsCircleSharp } from 'react-icons/io5'
 
 export const invalidImageValues = ['null', 'undefined']
 const Drawer = () => {
@@ -40,13 +41,20 @@ const Drawer = () => {
     },
     {
       id: 4,
+      title: 'Notifications',
+      icon: <IoNotificationsCircleSharp />,
+      isActive: pathName.includes('notifications'),
+      onClick: () => router.replace('/notifications')
+    },
+    {
+      id: 5,
       title: 'Create New Post',
       icon: <IoCreateOutline />,
       isActive: false,
       onClick: () => dispatch(setModals({ createPost: true }))
     },
     {
-      id: 5,
+      id: 6,
       title: 'Profile',
       icon: (
         <Image
@@ -75,9 +83,8 @@ const Drawer = () => {
             return (
               <div
                 key={menu.id}
-                className={`flex px-8 py-2 gap-2 cursor-pointer ${
-                  menu.isActive ? 'bg-[#F3F3F3]' : 'bg-white'
-                } hover:bg-[#F3F3F3]`}
+                className={`flex px-8 py-2 gap-2 cursor-pointer ${menu.isActive ? 'bg-[#F3F3F3]' : 'bg-white'
+                  } hover:bg-[#F3F3F3]`}
                 onClick={menu.onClick}>
                 <div className="self-center text-xl">{menu.icon}</div>
                 <div className="self-center text-xl">{menu.title}</div>

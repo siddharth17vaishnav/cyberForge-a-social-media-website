@@ -59,7 +59,7 @@ const Drawer = () => {
       icon: (
         <Image
           src={
-            !invalidImageValues.includes(userDetails.profile!)
+            userDetails.profile && !invalidImageValues.includes(userDetails.profile!)
               ? String(userDetails.profile)
               : assets.images.DUMMY_PROFILE
           }
@@ -83,8 +83,9 @@ const Drawer = () => {
             return (
               <div
                 key={menu.id}
-                className={`flex px-8 py-2 gap-2 cursor-pointer ${menu.isActive ? 'bg-[#F3F3F3]' : 'bg-white'
-                  } hover:bg-[#F3F3F3]`}
+                className={`flex px-8 py-2 gap-2 cursor-pointer ${
+                  menu.isActive ? 'bg-[#F3F3F3]' : 'bg-white'
+                } hover:bg-[#F3F3F3]`}
                 onClick={menu.onClick}>
                 <div className="self-center text-xl">{menu.icon}</div>
                 <div className="self-center text-xl">{menu.title}</div>

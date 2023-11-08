@@ -17,15 +17,8 @@ const postApi = createApi({
 
     getPostById: builder.query({
       queryFn: async id => {
-        const { data, error } = await supabase.from('posts').select('*').eq('id', id)
-        const { data: likesData } = await supabase.from('post_likes').select('*').eq('post_id', id)
-        const { data: userData } = await supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('id', data![0].user_id)
-        if (error) toast.error(error.message)
-        const resposne = { ...data![0], likes: likesData || [], user_profiles: userData![0] || {} }
-        return { data: resposne || {} }
+        const { data } = await supabase.rpc('get_posts').eq('id', id)
+        return { data: data }
       }
     }),
 

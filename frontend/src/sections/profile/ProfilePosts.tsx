@@ -1,7 +1,7 @@
 import Loader from '@/comp/Loader'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
-import { useLazyGetPostByIdQuery } from '@/store/postApi'
+import { useLazyGetPostByUseridQuery } from '@/store/postApi'
 import { useStateSelector } from '@/store/root.reducer'
 import { Tables } from '@/types/gen/supabase.table'
 import { useSearchParams } from 'next/navigation'
@@ -20,13 +20,13 @@ const ProfilePosts = () => {
   const { id: userId } = useStateSelector(state => state.userSlice)
   const [zIndex, setZIndex] = useState(0)
   const [data, setData] = useState<DataProps[]>()
-  const [getPost, { isLoading: postLoading, isFetching }] = useLazyGetPostByIdQuery()
+  const [getPost, { isLoading: postLoading, isFetching }] = useLazyGetPostByUseridQuery()
   const isLoading = postLoading || isFetching
 
   useEffect(() => {
     if (id || userId) {
       getPost(id || userId).then(data => {
-        setData(data as unknown as DataProps[])
+        setData(data.data as unknown as DataProps[])
       })
     }
   }, [id, userId])

@@ -90,11 +90,11 @@ const Post = ({ post, fullWidth = false }: Props) => {
       </div>
       <div className="mt-2 ml-1 text-[12px]">{formatLikeCount(post?.likes?.length || 0)} likes</div>
       <div className="ml-1 text-[12px]">
-        {!showFullText && post?.description!.length > 150
+        {post?.description && !showFullText && post?.description!.length > 150
           ? post!.description?.substring(0, 150) + '...'
           : post?.description}
       </div>
-      {post?.description!.length > 150 && (
+      {post?.description && post?.description!.length > 150 && (
         <div
           className="ml-1 text-[12px] font-semibold cursor-pointer"
           onClick={() => setShowFulltext(prev => !prev)}>

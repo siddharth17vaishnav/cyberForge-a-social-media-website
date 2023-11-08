@@ -1,5 +1,5 @@
 import Modal from '@/comp/Modal'
-import Post from '@/comp/Post'
+import Post, { PostProps } from '@/comp/Post'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useGetPostByIdQuery } from '@/store/postApi'
@@ -14,7 +14,7 @@ const ViewPostModal = () => {
   const { data } = useGetPostByIdQuery(id)
   return (
     <Modal isOpen={value} onClose={() => dispatch(setModals({ viewPost: false }))}>
-      <Post fullWidth post={data as any} />
+      {data && data![0] && <Post fullWidth post={data[0] as unknown as PostProps} />}
     </Modal>
   )
 }

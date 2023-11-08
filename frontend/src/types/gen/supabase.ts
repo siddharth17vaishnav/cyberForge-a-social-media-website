@@ -9,6 +9,45 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      friends: {
+        Row: {
+          created_at: string
+          from_user_id: number
+          id: number
+          status: string | null
+          to_user_id: number
+        }
+        Insert: {
+          created_at?: string
+          from_user_id: number
+          id?: number
+          status?: string | null
+          to_user_id: number
+        }
+        Update: {
+          created_at?: string
+          from_user_id?: number
+          id?: number
+          status?: string | null
+          to_user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friends_from_user_id_fkey"
+            columns: ["from_user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "friends_to_user_id_fkey"
+            columns: ["to_user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       post_comments: {
         Row: {
           comment: string

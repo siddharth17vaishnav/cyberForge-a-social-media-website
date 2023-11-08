@@ -12,6 +12,7 @@ const tabsOptions = [{ id: 1, title: 'Posts' }]
 
 export interface ProfileDataProps extends Tables<'user_profiles'> {
   posts: Tables<'posts'>[]
+  friends: Tables<'friends'>[]
 }
 
 const ProfileSection = () => {

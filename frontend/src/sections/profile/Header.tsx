@@ -4,11 +4,11 @@ import Image from 'next/image'
 import { GiHadesSymbol } from 'react-icons/gi'
 import { ProfileDataProps } from '.'
 import { invalidImageValues } from '@/comp/Drawer'
-import { MdPersonAddAlt1 } from 'react-icons/md'
 import { useSearchParams } from 'next/navigation'
 import { useAddFriendMutation } from '@/store/friendsApi'
 import { useStateSelector } from '@/store/root.reducer'
 import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
 interface Props {
   data: ProfileDataProps
 }
@@ -46,19 +46,13 @@ const ProfileHeader = ({ data }: Props) => {
         <div>
           <div className="flex gap-4">
             <div className="font-semibold pt-1">{data?.user_name}</div>
-            {id && (
-              <MdPersonAddAlt1
-                style={{ alignSelf: 'center', fontSize: 18, cursor: 'pointer' }}
-                onClick={handleAddFriend}
-              />
-            )}
           </div>
           <div className="flex gap-[50px]">
             <div>
               <span className="font-medium">{data?.posts?.length || 0}</span> posts
             </div>
             <div>
-              <span className="font-medium">20</span> friends
+              <span className="font-medium">{data?.friends?.length || 0}</span> friends
             </div>
           </div>
           <div className="mt-4">
@@ -73,6 +67,14 @@ const ProfileHeader = ({ data }: Props) => {
               Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week
               debugging Monday’s code..
             </p>
+            <div>
+              {id && (
+                <div className="flex gap-2 mt-2">
+                  <Button onClick={handleAddFriend}>Add Friend</Button>
+                  <Button>Message</Button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

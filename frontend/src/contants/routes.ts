@@ -1,6 +1,8 @@
 const StorageRotues = {
-    POST:(path:string)=>`http://localhost:54321/storage/v1/object/public/posts/${path}`,
-    PROFILE:(path:string)=>`http://localhost:54321/storage/v1/object/public/profiles/${path}`
+  POST: (path: string) =>
+    `https://tdosybnhdujmlaljiaiy.supabase.co/storage/v1/object/public/posts/${path}`,
+  PROFILE: (path: string) =>
+    `https://tdosybnhdujmlaljiaiy.supabase.co/storage/v1/object/public/profiles/${path}`
 }
 
-export {StorageRotues}
+export { StorageRotues }

@@ -68,5 +68,10 @@ const friendsApi = createApi({
   })
 })
 
-export const { useAddFriendMutation, useFetchFriendRequestsQuery } = friendsApi
+export const {
+  useAddFriendMutation,
+  useFetchFriendRequestsQuery,
+  useRejectFriendRequestMutation,
+  useAcceptFriendRequestMutation
+} = friendsApi
 export { friendsApi }

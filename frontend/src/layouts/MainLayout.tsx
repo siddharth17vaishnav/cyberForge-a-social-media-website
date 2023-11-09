@@ -42,7 +42,7 @@ const MainLayout = ({ children }: Props) => {
         })
     })
   }, [])
-  if (pathName.includes('auth')) return <>{children}</>
+  if (pathName?.includes('auth')) return <>{children}</>
   else {
     return (
       <div className="pb-[10px] md:pb-0">

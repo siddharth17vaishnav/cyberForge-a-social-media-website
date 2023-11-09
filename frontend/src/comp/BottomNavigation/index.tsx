@@ -22,7 +22,7 @@ const BottomNavigation = () => {
       id: 2,
       title: 'Search',
       icon: <BiSearchAlt2 />,
-      isActive: pathName.includes('search'),
+      isActive: pathName?.includes('search'),
       onClick: () => router.replace('/search')
     },
     {
@@ -36,7 +36,7 @@ const BottomNavigation = () => {
       id: 4,
       title: 'Messages',
       icon: <BiMessageDetail />,
-      isActive: pathName.includes('messages'),
+      isActive: pathName?.includes('messages'),
       onClick: () => router.replace('/messages')
     },
     {
@@ -51,7 +51,7 @@ const BottomNavigation = () => {
           className="rounded-full w-[20px] h-[20px]"
         />
       ),
-      isActive: pathName.includes('profile'),
+      isActive: pathName?.includes('profile'),
       onClick: () => router.replace('/profile')
     }
   ]

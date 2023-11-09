@@ -29,21 +29,21 @@ const Drawer = () => {
       id: 2,
       title: 'Search',
       icon: <BiSearchAlt2 />,
-      isActive: pathName.includes('search'),
+      isActive: pathName?.includes('search'),
       onClick: () => router.replace('/search')
     },
     {
       id: 3,
       title: 'Messages',
       icon: <BiMessageDetail />,
-      isActive: pathName.includes('messages'),
+      isActive: pathName?.includes('messages'),
       onClick: () => router.replace('/messages')
     },
     {
       id: 4,
       title: 'Notifications',
       icon: <IoNotificationsCircleSharp />,
-      isActive: pathName.includes('notifications'),
+      isActive: pathName?.includes('notifications'),
       onClick: () => router.replace('/notifications')
     },
     {
@@ -69,7 +69,7 @@ const Drawer = () => {
           className="rounded-full w-[20px] h-[20px]"
         />
       ),
-      isActive: pathName.includes('profile'),
+      isActive: pathName?.includes('profile'),
       onClick: () => router.replace('/profile')
     }
   ]

@@ -10,31 +10,39 @@ import ProfilePosts from './ProfilePosts'
 
 const tabsOptions = [{ id: 1, title: 'Posts' }]
 
+interface PostProps extends Tables<'posts'> {
+  post_likes: Tables<'post_likes'>[]
+  post_comments: Tables<'post_comments'>[]
+}
 export interface ProfileDataProps extends Tables<'user_profiles'> {
-  posts: Tables<'posts'>[]
+  posts: PostProps[]
   friends: Tables<'friends'>[]
 }
 
 const ProfileSection = () => {
   const [data, setData] = useState<ProfileDataProps>()
   const [selectedTab, setSelectedTab] = useState<string>('Posts')
-  const [getUser, { isLoading }] = useLazyUserByIdQuery()
+  const [getUser, { isLoading, isFetching }] = useLazyUserByIdQuery()
   const { id: userId } = useStateSelector(state => state.userSlice)
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
-  const { createPost } = useStateSelector(state => state.modalsSlice)
+  const { createPost, editProfile } = useStateSelector(state => state.modalsSlice)
 
+  const fetchData = () => {
+    !editProfile &&
+      setTimeout(() => {
+        getUser(Number(id) ? id : userId).then(({ data }) => {
+          const res = data as unknown as ProfileDataProps
+          setData(res)
+        })
+      }, 1000)
+  }
   useEffect(() => {
-    if (userId || id) {
-      getUser(Number(id) ? id : userId).then(({ data }) => {
-        const res = data as unknown as ProfileDataProps
-        setData(res)
-      })
-    }
-  }, [userId, id, createPost])
+    if (userId || id) fetchData()
+  }, [userId, id, createPost, editProfile])
   return (
     <div className="max-w-[90%] md:max-w-[80%] mx-auto my-4">
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <div className="w-full h-[90vh]">
           <Loader />
         </div>
@@ -46,7 +54,7 @@ const ProfileSection = () => {
             onChange={value => setSelectedTab(value)}
             value={selectedTab}
           />
-          {selectedTab === 'Posts' && <ProfilePosts />}
+          {selectedTab === 'Posts' && <ProfilePosts data={data!} />}
         </>
       )}
     </div>

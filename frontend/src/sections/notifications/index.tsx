@@ -18,7 +18,6 @@ const NotificationSection = () => {
   const pendingRequests = data?.filter(i => i.status === 'pending') || []
   return (
     <div className="pt-4 px-6">
-      <h5 className="font-semibold underline">Friend Requests</h5>
       <div>
         {pendingRequests && pendingRequests.length > 0 ? (
           <div className="my-3">
@@ -37,7 +36,7 @@ const NotificationSection = () => {
                       height={30}
                       className="rounded-full"
                     />
-                    <p>{request?.user?.user_name}</p>
+                    <p>{request?.user?.user_name} requested to add to your friendList</p>
                   </div>
                   <div className="flex gap-1">
                     <AiOutlineCheckCircle
@@ -60,7 +59,10 @@ const NotificationSection = () => {
             })}
           </div>
         ) : (
-          <div className="w-full mx-auto [text-align-last:center] mt-5"> No Friend Requests</div>
+          <div className="w-full mx-auto [text-align-last:center] mt-5">
+            {' '}
+            No notification found!
+          </div>
         )}
       </div>
     </div>

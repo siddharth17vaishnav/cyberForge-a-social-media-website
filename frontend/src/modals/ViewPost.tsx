@@ -1,3 +1,4 @@
+import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
 import Post, { PostProps } from '@/comp/Post'
 import { useAppDispatch } from '@/store'
@@ -11,10 +12,14 @@ const ViewPostModal = () => {
     viewPost: { id, value }
   } = useStateSelector(state => state.modalsSlice)
 
-  const { data } = useGetPostByIdQuery(id)
+  const { data, isLoading, isFetching } = useGetPostByIdQuery(id)
   return (
     <Modal isOpen={value} onClose={() => dispatch(setModals({ viewPost: false }))}>
-      {data && data![0] && <Post fullWidth post={data[0] as unknown as PostProps} />}
+      {isLoading || isFetching ? (
+        <Loader />
+      ) : (
+        data && data![0] && <Post fullWidth post={data[0] as unknown as PostProps} />
+      )}
     </Modal>
   )
 }

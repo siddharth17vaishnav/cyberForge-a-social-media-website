@@ -9,11 +9,14 @@ import { useAddFriendMutation } from '@/store/friendsApi'
 import { useStateSelector } from '@/store/root.reducer'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { useAppDispatch } from '@/store'
+import { setModals } from '@/store/Modals/modals.slice'
 interface Props {
   data: ProfileDataProps
 }
 
 const ProfileHeader = ({ data }: Props) => {
+  const dispatch = useAppDispatch()
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
   const { id: userId } = useStateSelector(state => state.userSlice)
@@ -63,16 +66,18 @@ const ProfileHeader = ({ data }: Props) => {
               <GiHadesSymbol className="self-center" />
               <p className="self-center">{data?.user_name}</p>
             </div>
-            <p className="max-w-[80%] mt-1">
-              Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week
-              debugging Monday’s code..
-            </p>
-            <div>
+            {data?.bio && <p className="max-w-[80%] mt-1">{data?.bio}</p>}
+            <div className="mt-2">
               {id && (
-                <div className="flex gap-2 mt-2">
+                <div className="flex gap-2">
                   <Button onClick={handleAddFriend}>Add Friend</Button>
                   <Button>Message</Button>
                 </div>
+              )}
+              {!id && (
+                <Button onClick={() => dispatch(setModals({ editProfile: true }))}>
+                  Edit Profile
+                </Button>
               )}
             </div>
           </div>

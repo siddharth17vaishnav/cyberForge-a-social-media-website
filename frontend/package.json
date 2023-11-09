@@ -10,7 +10,7 @@
     "tsc": "bash -c tsc --noEmit",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint:staged": "eslint",
-    "codegen": "npx supabase gen types typescript --project-id backend --schema public > src/types/gen/supabase.ts"
+    "typegen": "npx supabase gen types typescript --project-id tdosybnhdujmlaljiaiy --schema public > src/types/gen/supabase.ts"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",

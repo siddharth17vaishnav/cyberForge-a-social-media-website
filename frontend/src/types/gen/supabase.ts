@@ -157,6 +157,7 @@ export interface Database {
       }
       user_profiles: {
         Row: {
+          bio: string | null
           created_at: string
           email: string | null
           first_name: string | null
@@ -166,6 +167,7 @@ export interface Database {
           user_name: string | null
         }
         Insert: {
+          bio?: string | null
           created_at?: string
           email?: string | null
           first_name?: string | null
@@ -175,6 +177,7 @@ export interface Database {
           user_name?: string | null
         }
         Update: {
+          bio?: string | null
           created_at?: string
           email?: string | null
           first_name?: string | null

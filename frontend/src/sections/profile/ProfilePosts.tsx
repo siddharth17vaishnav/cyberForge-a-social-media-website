@@ -1,44 +1,28 @@
 import Loader from '@/comp/Loader'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
-import { useLazyGetPostByUseridQuery } from '@/store/postApi'
-import { useStateSelector } from '@/store/root.reducer'
-import { Tables } from '@/types/gen/supabase.table'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
 import { BsFillHeartFill } from 'react-icons/bs'
-interface DataProps extends Tables<'posts'> {
-  likes: Tables<'post_likes'>[]
-  comments: Tables<'post_comments'>[]
+import { ProfileDataProps } from '.'
+
+interface Props {
+  data: ProfileDataProps
 }
 
-const ProfilePosts = () => {
+const ProfilePosts = ({ data }: Props) => {
   const dispatch = useAppDispatch()
-  const searchParams = useSearchParams()
-  const id = searchParams.get('id')
-  const { id: userId } = useStateSelector(state => state.userSlice)
   const [zIndex, setZIndex] = useState(0)
-  const [data, setData] = useState<DataProps[]>()
-  const [getPost, { isLoading: postLoading, isFetching }] = useLazyGetPostByUseridQuery()
-  const isLoading = postLoading || isFetching
 
-  useEffect(() => {
-    if (id || userId) {
-      getPost(id || userId).then(data => {
-        setData(data.data as unknown as DataProps[])
-      })
-    }
-  }, [id, userId])
   return (
     <div className="mt-2 max-w-[90%] md:max-w-[80%] mx-auto">
-      {isLoading ? (
+      {false ? (
         <Loader className="mt-12" />
       ) : (
         <div>
-          {data && data.length > 0 ? (
+          {data && data?.posts?.length > 0 ? (
             <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 pb-[110px]">
-              {data.map(post => {
+              {data?.posts?.map(post => {
                 return (
                   <div
                     key={post.id}
@@ -51,11 +35,11 @@ const ProfilePosts = () => {
                       style={{ zIndex: zIndex === post.id ? 10 : -10 }}>
                       <div>
                         <BsFillHeartFill style={{ color: 'white' }} />
-                        <p className="text-sm">{post?.likes?.length || 0}</p>
+                        <p className="text-sm">{post?.post_likes?.length || 0}</p>
                       </div>
                       <div>
                         <AiFillMessage style={{ color: 'white' }} />
-                        <p className="text-sm">{post?.comments?.length || 0}</p>
+                        <p className="text-sm">{post?.post_comments?.length || 0}</p>
                       </div>
                     </div>
                     <img

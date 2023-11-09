@@ -1,3 +1,4 @@
+import { Tables } from '@/types/gen/supabase.table'
 import supabase from '@/utils/supabase'
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { toast } from 'sonner'
@@ -11,23 +12,47 @@ const userApi = createApi({
       queryFn: async id => {
         const { data, error } = await supabase
           .from('user_profiles')
-          .select('*,posts(*)')
+          .select('*,posts(*,post_likes(*),post_comments(*))')
           .eq('id', id)
         const { data: friendsData } = await supabase
           .from('friends')
           .select('*')
           .eq('from_user_id', id)
-        const friends = Array.from(friendsData as any)?.filter(
-          (data: any) => data.status === 'accepted'
+        const friends = Array.from(friendsData as Tables<'friends'>[])?.filter(
+          data => data.status === 'accepted'
         )
         const response = { ...data![0], friends: friends }
         if (error) toast.error(error?.message)
         return { data: response || [] }
       },
       providesTags: ['user']
+    }),
+    updateUser: builder.mutation({
+      queryFn: async ({ id, data, file, profile }) => {
+        let path
+        const fileName = profile?.split('profiles/')[1]
+
+        if (file && fileName) {
+          await supabase.storage
+            .from('profiles')
+            .update(fileName, file, {
+              cacheControl: '3600',
+              upsert: true
+            })
+            .then(res => (path = res.data?.path))
+        }
+        const { data: userData, error } = await supabase
+          .from('user_profiles')
+          .update({ ...data, profile: path ? path : data.profile })
+          .eq('id', id)
+          .select()
+        if (error) toast.error(error?.message)
+        return { data: userData![0] || {} }
+      },
+      invalidatesTags: ['user']
     })
   })
 })
 
-export const { useLazyUserByIdQuery } = userApi
+export const { useLazyUserByIdQuery, useUserByIdQuery, useUpdateUserMutation } = userApi
 export { userApi }

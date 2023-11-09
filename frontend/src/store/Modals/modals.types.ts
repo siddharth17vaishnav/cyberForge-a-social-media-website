@@ -5,4 +5,5 @@ export interface ModalsType {
   postOptions: { id: number; value: boolean }
   commentSection: { id: number; value: boolean }
   viewPost: { id: number; value: boolean }
+  editProfile: boolean
 }

@@ -10,7 +10,8 @@ const initialState: ModalsType = {
   editProfile: false,
   postOptions: { id: 0, value: false },
   commentSection: { id: 0, value: false },
-  viewPost: { id: 0, value: false }
+  viewPost: { id: 0, value: false },
+  startConversation: false
 }
 
 const modalsSlice = createSlice({

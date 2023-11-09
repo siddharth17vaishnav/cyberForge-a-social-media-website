@@ -5,10 +5,18 @@ import { Logout } from './Logout'
 import PostOptions from './PostOptions'
 import ViewPostModal from './ViewPost'
 import EditProfile from './EditProfile'
+import StartConversation from './StartConversation'
 
 const ModalProvider = () => {
-  const { commentSection, createPost, logout, postOptions, viewPost, editProfile } =
-    useStateSelector(state => state.modalsSlice)
+  const {
+    commentSection,
+    createPost,
+    logout,
+    postOptions,
+    viewPost,
+    editProfile,
+    startConversation
+  } = useStateSelector(state => state.modalsSlice)
   return (
     <>
       {createPost && <CreatePosts />}
@@ -17,6 +25,7 @@ const ModalProvider = () => {
       {commentSection.value && <CommentSection />}
       {viewPost.value && <ViewPostModal />}
       {editProfile && <EditProfile />}
+      {startConversation && <StartConversation />}
     </>
   )
 }

@@ -6,6 +6,7 @@ import { postApi } from './postApi'
 import { searchApi } from './searchApi'
 import { userApi } from './UserApi'
 import { friendsApi } from './friendsApi'
+import { conversationApi } from './conversationApi'
 
 const store = configureStore({
   reducer: rootReducer,
@@ -14,7 +15,8 @@ const store = configureStore({
       postApi.middleware,
       searchApi.middleware,
       userApi.middleware,
-      friendsApi.middleware
+      friendsApi.middleware,
+      conversationApi.middleware
     )
 })
 

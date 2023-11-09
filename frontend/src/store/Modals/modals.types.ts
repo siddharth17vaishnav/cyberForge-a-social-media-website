@@ -6,4 +6,5 @@ export interface ModalsType {
   commentSection: { id: number; value: boolean }
   viewPost: { id: number; value: boolean }
   editProfile: boolean
+  startConversation: boolean
 }

@@ -7,6 +7,7 @@ import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import { searchApi } from './searchApi'
 import { userApi } from './UserApi'
 import { friendsApi } from './friendsApi'
+import { conversationApi } from './conversationApi'
 
 const appReducer = combineReducers({
   userSlice,
@@ -14,7 +15,8 @@ const appReducer = combineReducers({
   [postApi.reducerPath]: postApi.reducer,
   [searchApi.reducerPath]: searchApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
-  [friendsApi.reducerPath]: friendsApi.reducer
+  [friendsApi.reducerPath]: friendsApi.reducer,
+  [conversationApi.reducerPath]: conversationApi.reducer
 })
 
 const rootReducer = (state: any, action: any) => {

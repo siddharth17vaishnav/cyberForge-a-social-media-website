@@ -50,9 +50,16 @@ const userApi = createApi({
         return { data: userData![0] || {} }
       },
       invalidatesTags: ['user']
+    }),
+    getAllUsers: builder.query({
+      queryFn: async () => {
+        const { data, error } = await supabase.from('user_profiles').select('*')
+        if (error) toast.error(error?.message)
+        return { data: data || [] }
+      }
     })
   })
 })
 
-export const { useLazyUserByIdQuery, useUserByIdQuery, useUpdateUserMutation } = userApi
+export const { useLazyUserByIdQuery, useUserByIdQuery, useUpdateUserMutation ,useGetAllUsersQuery} = userApi
 export { userApi }

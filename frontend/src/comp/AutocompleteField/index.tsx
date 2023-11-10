@@ -11,11 +11,12 @@ import React, { useState } from 'react'
 import { GoChevronUp as Up, GoChevronDown as Down } from 'react-icons/go'
 
 interface Props {
-  options: { value: string; label: string }[]
+  options: { id: number; value: string; label: string }[]
+  value: string
+  onChange: (e: { id: number; value: string }) => void
 }
-const AutocompleteField = ({ options }: Props) => {
+const AutocompleteField = ({ options, value, onChange }: Props) => {
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState('')
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -44,7 +45,10 @@ const AutocompleteField = ({ options }: Props) => {
                 key={option.value}
                 value={option.value}
                 onSelect={currentValue => {
-                  setValue(currentValue === value ? '' : currentValue)
+                  onChange({
+                    id: option.id,
+                    value: currentValue === value ? '' : currentValue
+                  })
                   setOpen(false)
                 }}>
                 {option.label}

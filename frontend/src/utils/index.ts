@@ -38,6 +38,7 @@ export { formatLikeCount, formatPostCreationTime }
 export const TransformAutocompleteFieldOptions = (data: any) => {
   return data?.map((res: any) => {
     return {
+      id: res.id,
       label: `${res.first_name} ${res.last_name}`,
       value: `${res.first_name} ${res.last_name}`
     }

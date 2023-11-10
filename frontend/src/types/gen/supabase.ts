@@ -9,6 +9,96 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      conversation: {
+        Row: {
+          created_at: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      conversation_messages: {
+        Row: {
+          conversation_id: string | null
+          created_at: string
+          id: number
+          message: string | null
+          user_id: number | null
+        }
+        Insert: {
+          conversation_id?: string | null
+          created_at?: string
+          id?: number
+          message?: string | null
+          user_id?: number | null
+        }
+        Update: {
+          conversation_id?: string | null
+          created_at?: string
+          id?: number
+          message?: string | null
+          user_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_messages_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      conversation_users: {
+        Row: {
+          conversation_id: string | null
+          created_at: string
+          id: number
+          user_id: number | null
+        }
+        Insert: {
+          conversation_id?: string | null
+          created_at?: string
+          id?: number
+          user_id?: number | null
+        }
+        Update: {
+          conversation_id?: string | null
+          created_at?: string
+          id?: number
+          user_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_users_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       friends: {
         Row: {
           created_at: string

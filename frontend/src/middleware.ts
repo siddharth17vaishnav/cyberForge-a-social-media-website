@@ -1,5 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server'
-const guestRoutes = [`/auth`, '/auth/signup', '/auth/signup/complete-profile']
+const guestRoutes = [
+  `/auth`,
+  '/auth/signup',
+  '/auth/signup/complete-profile',
+  '/auth/reset-password'
+]
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('auth_token')?.value

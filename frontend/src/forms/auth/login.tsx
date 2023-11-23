@@ -64,6 +64,8 @@ const LoginForm = () => {
     },
     validateOnMount: true
   })
+
+
   return (
     <>
       <CardContent>
@@ -89,6 +91,7 @@ const LoginForm = () => {
             </div>
           </div>
         </form>
+        <div className='text-sm [text-align-last:right] mt-2 cursor-pointer' onClick={() => router.push('/auth/reset-password')}>Forgot Password!</div>
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button

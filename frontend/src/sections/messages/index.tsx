@@ -21,9 +21,7 @@ const ConversationSection = () => {
   const [fetchConversation, { isLoading, isFetching }] = useLazyFetchConversationQuery()
   useEffect(() => {
     if (params?.id) {
-      fetchConversation(params.id)
-        .unwrap()
-        .then(data => setMessages(data as any))
+      fetchConversation(params.id).then(({ data }) => setMessages(data as any))
     }
     const channel = supabase
       .channel('conversation_messages')
@@ -52,15 +50,16 @@ const ConversationSection = () => {
             <div
               id="messages"
               className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-              {messages?.map(chat => {
-                return (
-                  <ChatMessage
-                    key={chat.id}
-                    isSender={chat?.user_profiles?.id === id}
-                    message={chat.message!}
-                  />
-                )
-              })}
+              {messages.length > 0 &&
+                messages?.map(chat => {
+                  return (
+                    <ChatMessage
+                      key={chat.id}
+                      isSender={chat?.user_id === id}
+                      message={chat.message!}
+                    />
+                  )
+                })}
             </div>
           )}
           <SendMessage />

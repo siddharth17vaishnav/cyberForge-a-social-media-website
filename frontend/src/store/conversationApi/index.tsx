@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 const conversationApi = createApi({
   reducerPath: '/conversation',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['conversation'],
+  tagTypes: ['conversation', 'conversation_messages'],
   endpoints: builder => ({
     createConversation: builder.mutation({
       queryFn: async ({ id, userId }) => {
@@ -46,23 +46,36 @@ const conversationApi = createApi({
       queryFn: async id => {
         const { data, error } = await supabase
           .from('conversation_users')
-          .select('*')
+          .select('*,user_profiles(*)')
           .eq('user_id', id)
-        const response =
-          data &&
-          (await Promise.all(
-            data?.map(async item => {
-              const { data: userData } = await supabase
-                .from('user_profiles')
-                .select()
-                .eq('id', Number(item?.user_id))
-
-              return { ...item, user_profiles: userData![0] }
-            })
-          ))
 
         if (error) toast(error.message)
-        return { data: response }
+        const conversationId = data?.map(item => item.conversation_id) || []
+        const { data: conversationData, error: conversationError } = await supabase
+          .from('conversation_users')
+          .select('*,user_profiles(*)')
+          .in('conversation_id', conversationId)
+        if (error) toast(conversationError?.message)
+        return { data: conversationData }
+      },
+      providesTags: ['conversation_messages']
+    }),
+    getConversationUser: builder.query({
+      queryFn: async id => {
+        const { data, error } = await supabase
+          .from('conversation_users')
+          .select('*,user_profiles(*)')
+          .eq('conversation_id', id)
+        if (error) toast(error.message)
+        return { data }
+      }
+    }),
+    deleteConversation: builder.mutation({
+      queryFn: async id => {
+        await supabase.from('conversation_messages').delete().eq('conversation_id', id)
+        await supabase.from('conversation_users').delete().eq('conversation_id', id)
+        await supabase.from('conversation').delete().eq('id', id)
+        return { data: {} }
       }
     })
   })
@@ -72,6 +85,8 @@ export const {
   useCreateConversationMutation,
   useLazyFetchConversationQuery,
   useLazyFetchConversationListQuery,
-  useSendMessageMutation
+  useSendMessageMutation,
+  useLazyGetConversationUserQuery,
+  useDeleteConversationMutation
 } = conversationApi
 export { conversationApi }

@@ -11,6 +11,6 @@
     "start": "npx supabase start",
     "stop": "npx supabase stop",
     "migration": "npx supabase db reset",
-    "link": "npx supabase link --project-ref tdosybnhdujmlaljiaiy"
+    "supabase-link": "npx supabase link --project-ref tdosybnhdujmlaljiaiy"
   }
 }

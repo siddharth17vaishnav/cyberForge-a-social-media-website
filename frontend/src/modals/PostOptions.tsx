@@ -80,25 +80,29 @@ const PostOptions = () => {
     [postData, postIds]
   )
   return (
-    <Modal hideclose removePadding isOpen={postOptions.value} onClose={onClose}>
+    <Modal hideclose removepadding isOpen={postOptions.value} onClose={onClose}>
       <div className="w-full flex flex-col  ">
-        {isLoading ? <Loader /> : options.map((option, index) => {
-          return (
-            <div key={option.id}>
-              {option.isVisible && (
-                <>
-                  <div
-                    style={{ color: option.color }}
-                    className="w-full [text-align-last:center] text-md  cursor-pointer hover:bg-stone-200 py-4"
-                    onClick={option.onclick}>
-                    {option.label}
-                  </div>
-                  {index !== options.length - 1 && <Separator />}
-                </>
-              )}
-            </div>
-          )
-        })}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          options.map((option, index) => {
+            return (
+              <div key={option.id}>
+                {option.isVisible && (
+                  <>
+                    <div
+                      style={{ color: option.color }}
+                      className="w-full [text-align-last:center] text-md  cursor-pointer hover:bg-stone-200 py-4"
+                      onClick={option.onclick}>
+                      {option.label}
+                    </div>
+                    {index !== options.length - 1 && <Separator />}
+                  </>
+                )}
+              </div>
+            )
+          })
+        )}
       </div>
     </Modal>
   )

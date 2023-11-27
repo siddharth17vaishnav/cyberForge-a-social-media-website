@@ -26,6 +26,11 @@ const SendMessage = () => {
           type="text"
           placeholder="Write your message!"
           className="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-3 pr-[7rem] bg-gray-200 rounded-md py-3"
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              handleSendMessage()
+            }
+          }}
         />
         <div className="absolute right-0 items-center inset-y-0 hidden sm:flex">
           <button

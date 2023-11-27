@@ -13,7 +13,6 @@ const searchApi = createApi({
           .from('user_profiles')
           .select('*')
           .or(`first_name.ilike.${key}%,last_name.ilike.${key}%,user_name.ilike.${key}%`)
-
         if (error) toast.error(error.message)
         return { data: !key ? [] : data || [] }
       }

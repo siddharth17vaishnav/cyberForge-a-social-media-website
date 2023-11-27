@@ -3,17 +3,25 @@ import Modal from '@/comp/Modal'
 import { Separator } from '@/components/ui/separator'
 import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
-import { postApi, useDeletePostMutation, useGetPostByUseridQuery } from '@/store/postApi'
+import {
+  postApi,
+  useDeletePostMutation,
+  useGetPostByIdQuery,
+  useGetPostByUseridQuery
+} from '@/store/postApi'
 import { useStateSelector } from '@/store/root.reducer'
-import React, { useMemo } from 'react'
+import { useRouter } from 'next/navigation'
+import { useMemo } from 'react'
 
 const PostOptions = () => {
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const [deletePost] = useDeletePostMutation()
   const { id } = useStateSelector(state => state.userSlice)
   const { postOptions } = useStateSelector(state => state.modalsSlice)
   const onClose = () => dispatch(setModals({ postOptions: { id: 0, value: false } }))
   const { data: postData, isLoading } = useGetPostByUseridQuery(id)
+  const { data: post } = useGetPostByIdQuery(postOptions.id)
 
   const postIds = postData?.map(i => i.id) ?? []
 
@@ -36,7 +44,7 @@ const PostOptions = () => {
       },
       {
         id: 1,
-        label: 'Unfollow',
+        label: 'UnFriend',
         onclick: () => null,
         color: 'red',
         isVisible: true
@@ -65,7 +73,10 @@ const PostOptions = () => {
       {
         id: 5,
         label: 'Go to profile',
-        onclick: () => null,
+        onclick: () => {
+          router.push(`/profile?id=${post![0].user_id}`)
+          onClose()
+        },
         color: 'black',
         isVisible: true
       },

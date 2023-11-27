@@ -54,7 +54,7 @@ const MessageList = () => {
           <Loader />
         </div>
       ) : (
-        <div className="mt-4 mx-6 w-full h-full">
+        <div className="mt-4 mx-6 h-full ">
           {data && data.length > 0 ? (
             data?.map(item => {
               return (
@@ -85,7 +85,7 @@ const MessageList = () => {
               )
             })
           ) : (
-            <div className="w-full h-full flex items-center align-center">No Messages Found</div>
+            <p className="w-full h-full">No Messages Found</p>
           )}
         </div>
       )}

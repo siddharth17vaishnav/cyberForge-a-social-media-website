@@ -26,16 +26,13 @@ const useCreatePost = () => {
         .from('posts')
         .insert({
           ...data,
-          image:
-            StorageRotues.POST(storageResponse.data?.path as string) ??
-            null
+          image: StorageRotues.POST(storageResponse.data?.path as string) ?? null
         })
         .then(() => toast.success('Post Created'))
       setLoading(false)
       return insertedData
     } catch (error) {
       setLoading(false)
-      // Handle error here if needed
       return null
     }
   }

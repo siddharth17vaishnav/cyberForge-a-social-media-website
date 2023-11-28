@@ -20,12 +20,13 @@ export interface ProfileDataProps extends Tables<'user_profiles'> {
 }
 
 const ProfileSection = () => {
-  const [data, setData] = useState<ProfileDataProps>()
-  const [selectedTab, setSelectedTab] = useState<string>('Posts')
-  const [getUser, { isLoading, isFetching }] = useLazyUserByIdQuery()
-  const { id: userId } = useStateSelector(state => state.userSlice)
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
+  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState<ProfileDataProps>()
+  const [selectedTab, setSelectedTab] = useState<string>('Posts')
+  const { id: userId } = useStateSelector(state => state.userSlice)
+  const [getUser, { isLoading, isFetching }] = useLazyUserByIdQuery()
   const { createPost, editProfile } = useStateSelector(state => state.modalsSlice)
 
   const fetchData = () => {
@@ -34,15 +35,17 @@ const ProfileSection = () => {
         getUser(Number(id) ? id : userId).then(({ data }) => {
           const res = data as unknown as ProfileDataProps
           setData(res)
+          setLoading(false)
         })
       }, 1000)
   }
   useEffect(() => {
-    if (userId || id) fetchData()
+    if (userId || (id && !editProfile)) fetchData()
   }, [userId, id, createPost, editProfile])
+
   return (
     <div className="max-w-[90%] md:max-w-[80%] mx-auto my-4">
-      {isLoading || isFetching ? (
+      {isLoading || isFetching || loading ? (
         <div className="w-full h-[90vh]">
           <Loader />
         </div>

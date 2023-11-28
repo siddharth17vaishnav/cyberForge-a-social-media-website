@@ -2,7 +2,7 @@ import assets from '@/assets'
 import { invalidImageValues } from '@/comp/Drawer'
 import Loader from '@/comp/Loader'
 import { Button } from '@/components/ui/button'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import {
   useDeleteConversationMutation,
@@ -20,7 +20,6 @@ interface Props extends Tables<'conversation_users'> {
 }
 const MessageList = () => {
   const router = useRouter()
-  const dispatch = useAppDispatch()
   const { id } = useStateSelector(state => state.userSlice)
   const [data, setData] = useState<Props[]>()
   const [deleteConversation] = useDeleteConversationMutation()

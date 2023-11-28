@@ -9,14 +9,13 @@ import { useAddFriendMutation } from '@/store/friendsApi'
 import { useStateSelector } from '@/store/root.reducer'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
+import { dispatch } from '@/store'
 interface Props {
   data: ProfileDataProps
 }
 
 const ProfileHeader = ({ data }: Props) => {
-  const dispatch = useAppDispatch()
   const searchParams = useSearchParams()
   const id = searchParams.get('id')
   const { id: userId } = useStateSelector(state => state.userSlice)

@@ -1,17 +1,16 @@
 import Loader from '@/comp/Loader'
-import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useState } from 'react'
 import { AiFillMessage } from 'react-icons/ai'
 import { BsFillHeartFill } from 'react-icons/bs'
 import { ProfileDataProps } from '.'
+import { dispatch } from '@/store'
 
 interface Props {
   data: ProfileDataProps
 }
 
 const ProfilePosts = ({ data }: Props) => {
-  const dispatch = useAppDispatch()
   const [zIndex, setZIndex] = useState(0)
 
   return (

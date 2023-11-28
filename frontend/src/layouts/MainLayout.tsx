@@ -1,7 +1,7 @@
 import BottomNavigation from '@/comp/BottomNavigation'
 import Drawer from '@/comp/Drawer'
 import HeaderForMobile from '@/comp/common/HeaderForMobile'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setAccount } from '@/store/User/user.slice'
 import supabase from '@/utils/supabase'
 import { deleteCookie } from 'cookies-next'
@@ -14,7 +14,6 @@ interface Props {
 const MainLayout = ({ children }: Props) => {
   const pathName = usePathname()
   const router = useRouter()
-  const dispatch = useAppDispatch()
   useEffect(() => {
     supabase.auth.getUser().then(session => {
       const email = session.data.user?.email

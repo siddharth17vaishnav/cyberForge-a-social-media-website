@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { BiHomeAlt2, BiSearchAlt2, BiMessageDetail } from 'react-icons/bi'
 import { HiOutlineLogout } from 'react-icons/hi'
 import { IoCreateOutline } from 'react-icons/io5'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useStateSelector } from '@/store/root.reducer'
 import { IoNotificationsCircleSharp } from 'react-icons/io5'
@@ -14,7 +14,6 @@ export const invalidImageValues = ['null', 'undefined']
 const Drawer = () => {
   const pathName = usePathname()
   const router = useRouter()
-  const dispatch = useAppDispatch()
   const userDetails = useStateSelector(state => state.userSlice)
   const options = [
     {

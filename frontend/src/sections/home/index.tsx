@@ -1,13 +1,12 @@
 import Loader from '@/comp/Loader'
 import Post, { PostProps } from '@/comp/Post'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useGetPostsQuery } from '@/store/postApi'
 
 const HomeSection = () => {
   const { data: postData, isLoading } = useGetPostsQuery(undefined)
-  const dispatch = useAppDispatch()
   return (
     <>
       {isLoading ? (

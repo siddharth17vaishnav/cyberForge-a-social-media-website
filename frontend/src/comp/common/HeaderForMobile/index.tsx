@@ -1,11 +1,10 @@
 import { useRouter } from 'next/navigation'
 import { IoNotificationsCircleSharp } from 'react-icons/io5'
 import { HiOutlineLogout } from 'react-icons/hi'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 const HeaderForMobile = () => {
   const { push } = useRouter()
-  const dispatch = useAppDispatch()
   return (
     <div className="flex justify-between lg:hidden px-8">
       <div className="font-pacifico text-2xl py-4 ">CyberForge</div>

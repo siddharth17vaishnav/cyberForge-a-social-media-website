@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Modal from '@/comp/Modal'
 import { Button } from '@/components/ui/button'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useDropzone } from 'react-dropzone'
 import Image from 'next/image'
@@ -17,7 +17,6 @@ export const CreatePosts = () => {
   const [file, setFile] = useState<File[]>([])
   const [image, setImage] = useState<string>()
   const [description, setDescription] = useState<string>('')
-  const dispatch = useAppDispatch()
   const { addPost, loading } = useCreatePost()
   const { createPost } = useStateSelector(state => state.modalsSlice)
   const { id } = useStateSelector(state => state.userSlice)

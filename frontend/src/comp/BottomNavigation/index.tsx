@@ -3,12 +3,11 @@ import Image from 'next/image'
 import { BiHomeAlt2, BiSearchAlt2, BiMessageDetail } from 'react-icons/bi'
 import CustomTooltip from '../Tooltip'
 import { usePathname, useRouter } from 'next/navigation'
-import { useAppDispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
+import { dispatch } from '@/store'
 const BottomNavigation = () => {
   const router = useRouter()
   const pathName = usePathname()
-  const dispatch = useAppDispatch()
   const options = [
     {
       id: 1,

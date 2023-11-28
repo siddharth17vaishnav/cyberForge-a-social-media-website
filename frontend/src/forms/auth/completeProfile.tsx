@@ -15,7 +15,7 @@ import useDebounce from '@/hooks/useDebounce'
 import { addCookie, fetchCookie } from '@/utils/cokkies'
 import { deleteCookie } from 'cookies-next'
 import { setAccount } from '@/store/User/user.slice'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { StorageRotues } from '@/contants/routes'
 
 const CompleteProfileForm = () => {
@@ -23,7 +23,6 @@ const CompleteProfileForm = () => {
   const email = searchParams.get('email')
   const ref = useRef<HTMLInputElement>(null)
   const router = useRouter()
-  const dispatch = useAppDispatch()
   const [userNameMesssage, setUserNameMessage] = useState<{
     message: string
     status: 'error' | 'success'

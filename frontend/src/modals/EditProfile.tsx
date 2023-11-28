@@ -2,14 +2,13 @@ import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
 import EditProfileForm from '@/forms/profile/EditProfile'
 import { ProfileDataProps } from '@/sections/profile'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useLazyUserByIdQuery } from '@/store/UserApi'
 import { useStateSelector } from '@/store/root.reducer'
 import React, { useEffect, useState } from 'react'
 
 const EditProfile = () => {
-  const dispatch = useAppDispatch()
   const { editProfile } = useStateSelector(state => state.modalsSlice)
   const { id } = useStateSelector(state => state.userSlice)
   const [data, setData] = useState<ProfileDataProps>()

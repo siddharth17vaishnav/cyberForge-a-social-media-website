@@ -1,13 +1,12 @@
 import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
 import Post, { PostProps } from '@/comp/Post'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useGetPostByIdQuery } from '@/store/postApi'
 import { useStateSelector } from '@/store/root.reducer'
 
 const ViewPostModal = () => {
-  const dispatch = useAppDispatch()
   const {
     viewPost: { id, value }
   } = useStateSelector(state => state.modalsSlice)

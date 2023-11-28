@@ -1,7 +1,7 @@
 import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
 import { Separator } from '@/components/ui/separator'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import {
   postApi,
@@ -14,7 +14,6 @@ import { useRouter } from 'next/navigation'
 import { useMemo } from 'react'
 
 const PostOptions = () => {
-  const dispatch = useAppDispatch()
   const router = useRouter()
   const [deletePost] = useDeletePostMutation()
   const { id } = useStateSelector(state => state.userSlice)

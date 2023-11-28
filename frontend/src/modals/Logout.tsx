@@ -1,6 +1,6 @@
 import Modal from '@/comp/Modal'
 import { Button } from '@/components/ui/button'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useStateSelector } from '@/store/root.reducer'
 import { removeCookie } from '@/utils/cokkies'
@@ -10,7 +10,6 @@ import React from 'react'
 
 export const Logout = () => {
   const router = useRouter()
-  const dispatch = useAppDispatch()
   const isOpen = useStateSelector(state => state.modalsSlice.logout)
   const onClose = () => {
     dispatch(setModals({ logout: false }))

@@ -3,7 +3,7 @@ import { invalidImageValues } from '@/comp/Drawer'
 import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import {
   postApi,
@@ -17,7 +17,6 @@ import React, { useState } from 'react'
 import InputEmoji from 'react-input-emoji'
 
 const CommentSection = () => {
-  const dispatch = useAppDispatch()
   const [addComment] = useAddCommentMutation()
   const [deleteComment] = useDeleteCommentMutation()
   const [comment, setComment] = useState('')

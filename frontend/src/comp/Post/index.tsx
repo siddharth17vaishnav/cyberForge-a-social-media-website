@@ -6,7 +6,7 @@ import { TfiCommentAlt } from 'react-icons/tfi'
 import { FcLike } from 'react-icons/fc'
 import { AiOutlineHeart } from 'react-icons/ai'
 import { postApi, useLazyDisLikePostQuery, useLazyLikePostQuery } from '@/store/postApi'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { formatLikeCount, formatPostCreationTime } from '@/utils'
 import { Tables } from '@/types/gen/supabase.table'
 import { setModals } from '@/store/Modals/modals.slice'
@@ -24,7 +24,6 @@ interface Props {
 }
 
 const Post = ({ post, fullWidth = false }: Props) => {
-  const dispatch = useAppDispatch()
   const [likePost] = useLazyLikePostQuery()
   const [disLikePost] = useLazyDisLikePostQuery()
   const [showFullText, setShowFulltext] = useState(false)

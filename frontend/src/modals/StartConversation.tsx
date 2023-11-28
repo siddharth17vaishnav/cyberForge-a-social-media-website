@@ -2,7 +2,7 @@ import AutocompleteField from '@/comp/AutocompleteField'
 import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
 import { Button } from '@/components/ui/button'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { useGetAllUsersQuery } from '@/store/UserApi'
 import {
@@ -15,7 +15,6 @@ import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const StartConversation = () => {
-  const dispatch = useAppDispatch()
   const [ids, setIds] = useState<number[]>([])
   const [value, setValue] = useState({ id: 0, value: '' })
   const { startConversation } = useStateSelector(state => state.modalsSlice)

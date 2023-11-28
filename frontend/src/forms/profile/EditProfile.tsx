@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { ProfileDataProps } from '@/sections/profile'
-import { useAppDispatch } from '@/store'
+import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
 import { setAccount } from '@/store/User/user.slice'
 import { useUpdateUserMutation, userApi } from '@/store/UserApi'
@@ -18,7 +18,6 @@ interface Props {
   data?: ProfileDataProps
 }
 const EditProfileForm = ({ data }: Props) => {
-  const dispatch = useAppDispatch()
   const ref = useRef<HTMLInputElement>(null)
 
   const [[selectedImage, file], setSelectedImage] = useState<[string, File | null]>(['', null])

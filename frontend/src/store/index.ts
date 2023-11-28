@@ -22,4 +22,5 @@ const store = configureStore({
 
 export const resetStore = () => ({ type: RESET_STORE })
 export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const { dispatch } = store
 export default store

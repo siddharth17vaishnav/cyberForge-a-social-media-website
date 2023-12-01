@@ -29,34 +29,29 @@ const ProfileSection = () => {
   const [getUser, { isLoading, isFetching }] = useLazyUserByIdQuery()
   const { createPost, editProfile, viewPost } = useStateSelector(state => state.modalsSlice)
 
-  const fetchData = () => {
-    !editProfile &&
-      setTimeout(() => {
-        getUser(Number(id) ? id : userId).then(({ data }) => {
-          const res = data as unknown as ProfileDataProps
-          setData(res)
-          setLoading(false)
-        })
-      }, 1000)
-  }
   useEffect(() => {
-    if (userId || (id && !editProfile)) fetchData()
+    if (!userId && !id && editProfile) return
+    setLoading(true)
+    setTimeout(() => {
+      getUser(Number(id) ? id : userId).then(({ data }) => {
+        setData(data as unknown as ProfileDataProps)
+        setLoading(false)
+      })
+    }, 1000)
   }, [userId, id, createPost, editProfile, viewPost])
+
+  const isLoadingData = isLoading || isFetching || loading
 
   return (
     <div className="max-w-[90%] md:max-w-[80%] mx-auto my-4">
-      {isLoading || isFetching || loading ? (
+      {isLoadingData ? (
         <div className="w-full h-[90vh]">
           <Loader />
         </div>
       ) : (
         <>
           <ProfileHeader data={data!} />
-          <Tabs
-            options={tabsOptions}
-            onChange={value => setSelectedTab(value)}
-            value={selectedTab}
-          />
+          <Tabs options={tabsOptions} onChange={setSelectedTab} value={selectedTab} />
           {selectedTab === 'Posts' && <ProfilePosts data={data!} />}
         </>
       )}

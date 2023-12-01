@@ -47,8 +47,9 @@ const ProfileHeader = ({ data }: Props) => {
           />
         </div>
         <div>
-          <div className="flex gap-4">
-            <div className="font-semibold pt-1">{data?.user_name}</div>
+          <div className="flex gap-2 bg-[#F6F6F6] max-w-[fit-content] px-2 py-1 rounded-full">
+            <GiHadesSymbol className="self-center" />
+            <p className="self-center">{data?.user_name}</p>
           </div>
           <div className="flex gap-[50px]">
             <div>
@@ -62,10 +63,7 @@ const ProfileHeader = ({ data }: Props) => {
             <p>
               {data?.first_name} {data?.last_name}
             </p>
-            <div className="flex gap-2 bg-[#F6F6F6] max-w-[fit-content] px-2 py-1 rounded-full">
-              <GiHadesSymbol className="self-center" />
-              <p className="self-center">{data?.user_name}</p>
-            </div>
+
             {data?.bio && <p className="max-w-[80%] mt-1">{data?.bio}</p>}
             <div className="mt-2">
               {id && (

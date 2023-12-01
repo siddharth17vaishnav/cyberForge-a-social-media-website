@@ -17,12 +17,12 @@ const ConversationSection = () => {
   const params = useParams()
   const [messages, setMessages] = useState<MessageProps[]>([])
   const { id } = useStateSelector(state => state.userSlice)
-
   const [fetchConversation, { isLoading, isFetching }] = useLazyFetchConversationQuery()
+
   useEffect(() => {
-    if (params?.id) {
-      fetchConversation(params.id).then(({ data }) => setMessages(data as any))
-    }
+    if (!params?.id) return
+    fetchConversation(params.id).then(({ data }) => setMessages(data as any))
+
     const channel = supabase
       .channel('conversation_messages')
       .on(
@@ -37,33 +37,32 @@ const ConversationSection = () => {
       void supabase.removeChannel(channel)
     }
   }, [params?.id])
+
+  const isLoadingData = isLoading || isFetching
+
   return (
-    <div>
-      <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
-        <ChatHeader />
-        <div>
-          {isLoading || isFetching ? (
-            <div className="h-[60vh]">
-              <Loader />
-            </div>
-          ) : (
-            <div
-              id="messages"
-              className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-              {messages.length > 0 &&
-                messages?.map(chat => {
-                  return (
-                    <ChatMessage
-                      key={chat.id}
-                      isSender={chat?.user_id === id}
-                      message={chat.message!}
-                    />
-                  )
-                })}
-            </div>
-          )}
-          <SendMessage />
-        </div>
+    <div className="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
+      <ChatHeader />
+      <div>
+        {isLoadingData ? (
+          <div className="h-[60vh]">
+            <Loader />
+          </div>
+        ) : (
+          <div
+            id="messages"
+            className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
+            {messages.map(chat => (
+              <ChatMessage
+                key={chat.id}
+                isSender={chat?.user_id === id}
+                message={chat.message!}
+                user={chat.user_profiles}
+              />
+            ))}
+          </div>
+        )}
+        <SendMessage />
       </div>
     </div>
   )

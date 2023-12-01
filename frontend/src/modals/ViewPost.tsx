@@ -17,7 +17,9 @@ const ViewPostModal = () => {
       {isLoading || isFetching ? (
         <Loader />
       ) : (
-        data && data![0] && <Post fullWidth post={data[0] as unknown as PostProps} />
+        <div className="mt-3">
+          {data && data![0] && <Post fullWidth post={data[0] as unknown as PostProps} />}
+        </div>
       )}
     </Modal>
   )

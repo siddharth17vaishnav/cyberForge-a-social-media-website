@@ -26,10 +26,12 @@ const PostOptions = () => {
 
   const handleDeletePost = () => {
     const image = postData?.find(i => i.id === postOptions.id)?.image
-    deletePost({ id: postOptions.id, image: image?.split('posts/public/')[1] }).then(() =>
+    deletePost({ id: postOptions.id, image: image?.split('posts/public/')[1] }).then(() => {
       dispatch(postApi.util.invalidateTags(['posts']))
-    )
-    onClose()
+      dispatch(
+        setModals({ postOptions: { id: 0, value: false }, viewPost: { id: 0, value: false } })
+      )
+    })
   }
 
   const options = useMemo(

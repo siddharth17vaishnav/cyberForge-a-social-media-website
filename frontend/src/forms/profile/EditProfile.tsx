@@ -3,6 +3,7 @@ import { invalidImageValues } from '@/comp/Drawer'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { StorageRotues } from '@/contants/routes'
 import { ProfileDataProps } from '@/sections/profile'
 import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
@@ -34,7 +35,8 @@ const EditProfileForm = ({ data }: Props) => {
         id: data?.id,
         data: values,
         file,
-        profile: data?.profile
+        email: data?.email,
+        profile: data?.profile ? StorageRotues.PROFILE(data.profile) : null
       }).then((res: any) => {
         const { data } = res
         dispatch(

@@ -70,12 +70,11 @@ const postApi = createApi({
     }),
     deletePost: builder.mutation({
       queryFn: async ({ id, image }) => {
+        await supabase.from('post_comments').delete().eq('post_id', id)
+        await supabase.from('post_likes').delete().eq('post_id', id)
         await supabase.storage.from('posts').remove([`public/${image}`])
-        const { data, error } = await supabase.from('posts').delete().eq('id', id)
-        if (error) {
-          throw toast.error(error.message)
-        }
-        return { data: data ?? [] }
+        await supabase.from('posts').delete().eq('id', id)
+        return { data: null }
       }
     }),
 

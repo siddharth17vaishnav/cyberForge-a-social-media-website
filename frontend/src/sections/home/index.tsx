@@ -13,7 +13,7 @@ const HomeSection = () => {
         <Loader />
       ) : (
         <ScrollArea className="h-[99vh] w-full rounded-md p-4">
-          <div className=" mx-auto pt-12 pb-10">
+          <div className=" mx-auto  pb-10">
             {postData && postData.length > 0 ? (
               Array.from(postData).map(res => {
                 const posts = res as PostProps

@@ -2,6 +2,8 @@ import assets from '@/assets'
 import { invalidImageValues } from '@/comp/Drawer'
 import Loader from '@/comp/Loader'
 import Modal from '@/comp/Modal'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { dispatch } from '@/store'
 import { setModals } from '@/store/Modals/modals.slice'
@@ -12,12 +14,12 @@ import {
   useGetCommentsQuery
 } from '@/store/postApi'
 import { useStateSelector } from '@/store/root.reducer'
+import { ReloadIcon } from '@radix-ui/react-icons'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import InputEmoji from 'react-input-emoji'
 
 const CommentSection = () => {
-  const [addComment] = useAddCommentMutation()
+  const [addComment, { isLoading: isCommentSending }] = useAddCommentMutation()
   const [deleteComment] = useDeleteCommentMutation()
   const [comment, setComment] = useState('')
   const {
@@ -95,12 +97,16 @@ const CommentSection = () => {
             )}
           </div>
         </ScrollArea>
-        <InputEmoji
-          value={comment}
-          onChange={setComment}
-          onEnter={handleOnEnter}
-          placeholder="Add a comment..."
-        />
+        <div className="flex gap-2">
+          <Input
+            placeholder="Write a comment"
+            onKeyDown={e => e.key === 'Enter' && handleOnEnter()}
+            onChange={e => setComment(e.target.value)}
+          />
+          <Button>
+            {isCommentSending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}Send
+          </Button>
+        </div>
       </div>
     </Modal>
   )

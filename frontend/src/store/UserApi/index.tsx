@@ -1,3 +1,4 @@
+import { StorageRotues } from '@/contants/routes'
 import { Tables } from '@/types/gen/supabase.table'
 import supabase from '@/utils/supabase'
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
@@ -28,7 +29,7 @@ const userApi = createApi({
       providesTags: ['user']
     }),
     updateUser: builder.mutation({
-      queryFn: async ({ id, data, file, profile }) => {
+      queryFn: async ({ id, data, file, profile, email }) => {
         let path
         const fileName = profile?.split('profiles/')[1]
 
@@ -40,10 +41,18 @@ const userApi = createApi({
               upsert: true
             })
             .then(res => (path = res.data?.path))
+        } else {
+          await supabase.storage
+            .from('profiles')
+            .upload(`public/${email}/${file?.name}`, file, {
+              cacheControl: '3600',
+              upsert: false
+            })
+            .then(res => (path = res.data?.path))
         }
         const { data: userData, error } = await supabase
           .from('user_profiles')
-          .update({ ...data, profile: path ? path : data.profile })
+          .update({ ...data, profile: path ? StorageRotues.PROFILE(path) : data.profile })
           .eq('id', id)
           .select()
         if (error) toast.error(error?.message)
@@ -61,5 +70,10 @@ const userApi = createApi({
   })
 })
 
-export const { useLazyUserByIdQuery, useUserByIdQuery, useUpdateUserMutation ,useGetAllUsersQuery} = userApi
+export const {
+  useLazyUserByIdQuery,
+  useUserByIdQuery,
+  useUpdateUserMutation,
+  useGetAllUsersQuery
+} = userApi
 export { userApi }

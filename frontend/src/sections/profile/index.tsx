@@ -27,7 +27,7 @@ const ProfileSection = () => {
   const [selectedTab, setSelectedTab] = useState<string>('Posts')
   const { id: userId } = useStateSelector(state => state.userSlice)
   const [getUser, { isLoading, isFetching }] = useLazyUserByIdQuery()
-  const { createPost, editProfile } = useStateSelector(state => state.modalsSlice)
+  const { createPost, editProfile, viewPost } = useStateSelector(state => state.modalsSlice)
 
   const fetchData = () => {
     !editProfile &&
@@ -41,7 +41,7 @@ const ProfileSection = () => {
   }
   useEffect(() => {
     if (userId || (id && !editProfile)) fetchData()
-  }, [userId, id, createPost, editProfile])
+  }, [userId, id, createPost, editProfile, viewPost])
 
   return (
     <div className="max-w-[90%] md:max-w-[80%] mx-auto my-4">

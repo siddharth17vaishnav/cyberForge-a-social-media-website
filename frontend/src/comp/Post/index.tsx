@@ -1,6 +1,6 @@
 import assets from '@/assets'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CiMenuKebab } from 'react-icons/ci'
 import { TfiCommentAlt } from 'react-icons/tfi'
 import { FcLike } from 'react-icons/fc'
@@ -29,12 +29,21 @@ const Post = ({ post, fullWidth = false }: Props) => {
   const [showFullText, setShowFulltext] = useState(false)
   const { id } = useStateSelector(state => state.userSlice)
   const likeIds = post?.likes?.map(i => i.user_id) || []
+  const [isLiked, setIsLiked] = useState(false)
+  const [likes, setLikes] = useState(0)
+
+  useEffect(() => {
+    setIsLiked(likeIds.includes(id))
+    setLikes(post?.likes?.length || 0)
+  }, [])
 
   const handleLikePost = () => {
     const data = {
       post_id: post.id,
       user_id: id
     }
+    setIsLiked(true)
+    setLikes(prev => prev + 1)
     likePost(data).then(() => dispatch(postApi.util.invalidateTags(['posts'])))
   }
   const handleDislikePost = () => {
@@ -42,10 +51,12 @@ const Post = ({ post, fullWidth = false }: Props) => {
       postId: post.id,
       userId: id
     }
+    setIsLiked(false)
+    setLikes(prev => prev - 1)
     disLikePost(data).then(() => dispatch(postApi.util.invalidateTags(['posts'])))
   }
   return (
-    <div className={`w-[full] ${!fullWidth && 'lg:w-[60%]'} mb-7`}>
+    <div className={`w-[full] mx-auto ${!fullWidth && 'max-w-[700px]'} mb-7`}>
       <div className="flex justify-between">
         <div className="flex gap-3">
           <Image
@@ -58,7 +69,7 @@ const Post = ({ post, fullWidth = false }: Props) => {
             alt={'post-user-image'}
             width={50}
             height={50}
-            className="rounded-full w-[50px] h-[50px]"
+            className="rounded-full w-[50px] h-[50px] object-contain"
           />
           <div className="">
             <h5 className="font-bold">{post?.user_profiles?.user_name}</h5>
@@ -76,7 +87,7 @@ const Post = ({ post, fullWidth = false }: Props) => {
         <Image src={post?.image!} alt="feed-post" fill className="rounded 	" />
       </div>
       <div className="mt-2 ml-1 flex gap-3">
-        {!likeIds.includes(id) ? (
+        {!isLiked ? (
           <AiOutlineHeart fontSize={21} onClick={handleLikePost} className="cursor-pointer" />
         ) : (
           <FcLike fontSize={21} className="mt-[-2px] cursor-pointer" onClick={handleDislikePost} />
@@ -87,7 +98,7 @@ const Post = ({ post, fullWidth = false }: Props) => {
           onClick={() => dispatch(setModals({ commentSection: { id: post?.id, value: true } }))}
         />
       </div>
-      <div className="mt-2 ml-1 text-[12px]">{formatLikeCount(post?.likes?.length || 0)} likes</div>
+      <div className="mt-2 ml-1 text-[12px]">{formatLikeCount(likes || 0)} likes</div>
       <div className="ml-1 text-[12px]">
         {post?.description && !showFullText && post?.description!.length > 150
           ? post!.description?.substring(0, 150) + '...'

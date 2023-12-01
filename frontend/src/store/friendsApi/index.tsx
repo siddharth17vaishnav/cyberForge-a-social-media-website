@@ -1,6 +1,12 @@
+import { Tables } from '@/types/gen/supabase.table'
 import supabase from '@/utils/supabase'
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { toast } from 'sonner'
+
+type UserProps = Tables<'user_profiles'>
+interface FetchFriendRequestsProps extends Tables<'friends'> {
+  user: Partial<UserProps>
+}
 
 const friendsApi = createApi({
   reducerPath: '/friends',
@@ -36,7 +42,7 @@ const friendsApi = createApi({
     }),
     fetchFriendRequests: builder.query({
       queryFn: async id => {
-        let result = []
+        let result: FetchFriendRequestsProps[] = []
         const { data: friendsData, error: friendsError } = await supabase
           .from('friends')
           .select('*')

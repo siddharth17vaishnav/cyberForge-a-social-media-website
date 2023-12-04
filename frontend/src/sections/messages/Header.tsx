@@ -25,11 +25,16 @@ const ChatHeader = () => {
       <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
         <div className="relative flex items-center space-x-4">
           <div className="relative">
-            <span className="absolute text-green-500 right-0 bottom-0">
-              <svg width="20" height="20">
-                <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
-              </svg>
-            </span>
+            {data && (
+              <span
+                className={`absolute ${
+                  data?.is_logged_in ? 'text-green-500' : ' text-red-600'
+                } right-0 bottom-0`}>
+                <svg width="20" height="20">
+                  <circle cx="8" cy="8" r="8" fill="currentColor"></circle>
+                </svg>
+              </span>
+            )}
             <Image
               width={100}
               height={100}

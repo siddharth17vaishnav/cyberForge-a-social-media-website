@@ -39,7 +39,6 @@ const ProfileHeader = ({ data }: Props) => {
                 ? data?.profile!
                 : assets.images.DUMMY_PROFILE
             }
-            key={`user-id-${data.id}`}
             alt="profile"
             width={120}
             height={120}

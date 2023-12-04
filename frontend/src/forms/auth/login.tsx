@@ -40,10 +40,12 @@ const LoginForm = () => {
               const email = data.session?.user.email
               await supabase
                 .from('user_profiles')
-                .select('*')
+                .update({ is_logged_in: true })
                 .eq('email', String(email))
+                .select('*')
                 .then(({ data: userData }) => {
-                  userData &&
+                  if (userData) {
+                    addCookie('id', String(userData[0].id))
                     dispatch(
                       setAccount({
                         id: userData[0].id,
@@ -54,7 +56,9 @@ const LoginForm = () => {
                         profile: userData[0].profile
                       })
                     )
+                  }
                   addCookie('auth_token', String(data.session?.access_token))
+
                   router.push('/')
                 })
             })

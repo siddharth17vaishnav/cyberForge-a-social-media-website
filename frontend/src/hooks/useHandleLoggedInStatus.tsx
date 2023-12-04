@@ -1,10 +1,10 @@
-import MessageList from '@/sections/messages/MessageList'
 import { fetchCookie } from '@/utils/cokkies'
 import supabase from '@/utils/supabase'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
-const Messages = () => {
+const useHandleLoggedInStatus = () => {
   const id = fetchCookie('id')
+
   useEffect(() => {
     const handleVisibilityChange = async () => {
       if (document.hidden) {
@@ -13,12 +13,14 @@ const Messages = () => {
         await supabase.from('user_profiles').update({ is_logged_in: true }).eq('id', Number(id))
       }
     }
+
     document.addEventListener('visibilitychange', handleVisibilityChange)
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [])
-  return <MessageList />
+  }, [id])
+  return null
 }
 
-export default Messages
+export default useHandleLoggedInStatus

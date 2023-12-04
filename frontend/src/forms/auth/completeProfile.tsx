@@ -65,7 +65,8 @@ const CompleteProfileForm = () => {
             user_name: values.userName,
             first_name: values.firstName,
             last_name: values.lastName,
-            profile: !!fileName ? StorageRotues.PROFILE(fileName) : null
+            profile: !!fileName ? StorageRotues.PROFILE(fileName) : null,
+            is_logged_in: true
           },
           { onConflict: 'email' }
         )
@@ -79,7 +80,8 @@ const CompleteProfileForm = () => {
             .select('*')
             .eq('email', String(email))
             .then(({ data: userData }) => {
-              userData &&
+              if (userData) {
+                addCookie('id', String(userData[0].id))
                 dispatch(
                   setAccount({
                     id: userData[0].id,
@@ -90,6 +92,7 @@ const CompleteProfileForm = () => {
                     profile: userData[0].profile
                   })
                 )
+              }
               router.push('/')
             })
         })

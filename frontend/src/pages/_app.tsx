@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Loader from '@/comp/Loader'
 import { Toaster } from 'sonner'
+import useHandleLoggedInStatus from '@/hooks/useHandleLoggedInStatus'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -26,10 +27,19 @@ export default function App({ Component, pageProps }: AppProps) {
       router.events.off('routeChangeError', handleChangeLoaderFalse)
     }
   }, [router])
+  useHandleLoggedInStatus()
   return (
     <ReduxProvider>
       <Toaster />
-      <MainLayout>{loading ? <div className='w-full h-screen'><Loader /></div> : <Component {...pageProps} />}</MainLayout>
+      <MainLayout>
+        {loading ? (
+          <div className="w-full h-screen">
+            <Loader />
+          </div>
+        ) : (
+          <Component {...pageProps} />
+        )}
+      </MainLayout>
     </ReduxProvider>
   )
 }
